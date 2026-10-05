@@ -1,0 +1,1199 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Megha Singh</title>
+<meta name="description" content="AI Marketing Operations, Infineon Technologies. Case studies in n8n workflow automation, generative AI content pipelines and B2B campaign operations." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#14213d;
+    --navy-deep:#0a1526;
+    --navy-mid:#1e3157;
+    --amber:#fca311;
+    --white:#ffffff;
+    --paper:#f3f5f9;
+    --navy-ink: rgba(20,33,61,0.68);
+    --line-dark: rgba(255,255,255,0.16);
+    --line-light: rgba(20,33,61,0.15);
+    --font:'EB Garamond', 'Garamond', 'Cambria', Georgia, serif;
+    --header-h: 76px;
+    --measure:64ch;
+  }
+
+  *{box-sizing:border-box;}
+  html{
+    scroll-behavior:smooth; scroll-padding-top:var(--header-h);
+    scroll-snap-type:y mandatory;
+  }
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto; scroll-snap-type:none;}
+    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+  }
+
+  body{
+    margin:0; padding-top:var(--header-h);
+    background:var(--white); color:var(--navy);
+    font-family:var(--font);
+    font-size:17px; line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  img{max-width:100%;display:block;}
+  a{color:inherit;}
+  h1,h2,h3{text-wrap:balance;margin:0;font-family:var(--font); font-weight:600;}
+  p{margin:0;}
+  ul{margin:0;padding:0;list-style:none;}
+  .container{max-width:1180px;margin:0 auto;padding-left:32px;padding-right:32px;width:100%;}
+  @media (max-width:640px){.container{padding-left:22px;padding-right:22px;}}
+
+  .eyebrow{font-size:0.84rem; letter-spacing:0.2em; text-transform:uppercase; font-weight:600;}
+  .tool-icon{width:20px;height:20px;flex-shrink:0;}
+
+  /* ---------- progress trace ---------- */
+  #trace{position:fixed; top:0; left:0; height:3px; width:0%; background:var(--amber); z-index:300; transition:width 0.1s linear;}
+
+  /* ---------- fixed header ---------- */
+  header{
+    position:fixed; top:0; left:0; right:0; height:var(--header-h); z-index:200;
+    background:rgba(255,255,255,0.92); backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line-light);
+  }
+  .nav-row{display:flex; align-items:center; justify-content:space-between; height:100%;}
+  .brand{font-weight:700; font-size:1.32rem; letter-spacing:0.01em; text-decoration:none; color:var(--navy);}
+  nav.links{display:flex; gap:34px; align-items:center;}
+  nav.links a{font-size:1.02rem; text-decoration:none; color:var(--navy); padding-bottom:4px; border-bottom:2px solid transparent; transition:color .15s, border-color .15s;}
+  nav.links a:hover, nav.links a.active{color:var(--navy); border-color:var(--amber);}
+  .nav-cta{font-size:0.95rem; background:var(--amber); color:var(--navy-deep); text-decoration:none; padding:10px 20px; border-radius:3px; font-weight:700; white-space:nowrap; transition:background .15s;}
+  .nav-cta:hover{background:#e3920e;}
+  #menu-btn{display:none;}
+  @media (max-width:900px){
+    nav.links{display:none;}
+    #menu-btn{display:flex; width:40px;height:40px;border:1px solid var(--line-light);background:none;align-items:center;justify-content:center;cursor:pointer; position:relative;}
+    #menu-btn span, #menu-btn::before, #menu-btn::after{content:"";display:block;width:18px;height:1.5px;background:var(--navy);position:relative;}
+    #menu-btn::before{top:-6px;position:absolute;}
+    #menu-btn::after{top:6px;position:absolute;}
+    .nav-cta{display:none;}
+  }
+  #mobile-menu{display:none; flex-direction:column; padding:8px 0 18px; border-top:1px solid var(--line-light); background:var(--white);}
+  #mobile-menu.open{display:flex;}
+  #mobile-menu a{font-size:1.05rem; color:var(--navy); text-decoration:none; padding:12px 0; border-bottom:1px solid var(--line-light);}
+
+  /* ---------- side dot nav ---------- */
+  #dotnav{position:fixed; right:22px; top:50%; transform:translateY(-50%); z-index:190; display:flex; flex-direction:column; gap:16px;}
+  #dotnav a{width:9px;height:9px;border-radius:50%; border:1.5px solid var(--amber); opacity:0.45; display:block; transition:all .2s; position:relative;}
+  #dotnav a.active{background:var(--amber); opacity:1; width:11px; height:11px;}
+  #dotnav a::before{content:attr(data-label); position:absolute; right:22px; top:50%; transform:translateY(-50%); font-size:0.8rem; background:var(--navy-deep); color:var(--white); padding:4px 10px; border-radius:3px; white-space:nowrap; opacity:0; pointer-events:none; transition:opacity .15s;}
+  #dotnav a:hover::before{opacity:1;}
+  @media (max-width:760px){#dotnav{display:none;}}
+
+  [data-reveal]{opacity:1; transform:none;}
+  [data-reveal].pre{opacity:0; transform:translateY(14px);}
+  [data-reveal].in{opacity:1; transform:translateY(0); transition:opacity .6s ease, transform .6s ease;}
+
+  /* ---------- slide sections + angular gradients ---------- */
+  section.slide{
+    min-height:100vh; min-height:100svh;
+    display:flex; align-items:center;
+    padding:calc(var(--header-h) + 44px) 0 52px;
+    scroll-snap-align:start; scroll-snap-stop:always;
+    position:relative; overflow:hidden;
+  }
+  footer{scroll-snap-align:start;}
+  .slide-inner{width:100%; min-width:0; position:relative; z-index:1;}
+
+  .bg-dark{
+    background:conic-gradient(from 222deg at 24% 16%, var(--navy-deep), var(--navy) 30%, var(--navy-mid) 55%, var(--navy) 80%, var(--navy-deep) 100%);
+    color:var(--white);
+  }
+  .bg-dark::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 80% 12%, rgba(252,163,17,0.24), transparent 44%);}
+  .bg-light{
+    background:conic-gradient(from 198deg at 84% 4%, #ffffff, var(--paper) 36%, #ffffff 64%, #eef1f6 86%, #ffffff 100%);
+    color:var(--navy);
+  }
+  .bg-light::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 6% 94%, rgba(252,163,17,0.08), transparent 40%);}
+  .muted{color:rgba(255,255,255,0.68);}
+  .bg-light .muted{color:var(--navy-ink);}
+  .accent{color:var(--amber);}
+
+  .section-title{font-size:clamp(1.8rem,3.4vw,2.6rem); font-weight:600; letter-spacing:-0.01em; margin-top:8px;}
+  .lede{font-size:1.1rem; line-height:1.72; max-width:var(--measure);}
+
+  .btn{font-size:0.96rem; padding:13px 26px; border-radius:3px; text-decoration:none; display:inline-flex; align-items:center; gap:8px; font-weight:700; transition:transform .15s ease, background .15s, color .15s, border-color .15s; max-width:100%;}
+  @media (max-width:640px){.btn{white-space:normal !important; text-align:left;}}
+  .btn:hover{transform:translateY(-1px);}
+  .btn-solid{background:var(--amber); color:var(--navy-deep);}
+  .btn-solid:hover{background:#e3920e;}
+  .btn-outline{border:1.5px solid rgba(255,255,255,0.42); color:var(--white);}
+  .btn-outline:hover{border-color:var(--white); background:rgba(255,255,255,0.08);}
+  .btn-outline-dark{border:1.5px solid var(--line-light); color:var(--navy);}
+  .btn-outline-dark:hover{border-color:var(--navy);}
+
+  /* ---------- hero ---------- */
+  .hero-grid{display:grid; grid-template-columns:1.2fr 0.8fr; gap:54px; align-items:start;}
+  .hero-grid > *{min-width:0;}
+  @media (max-width:900px){.hero-grid{grid-template-columns:1fr; gap:36px;}}
+  .hero-tag{color:var(--amber); margin-bottom:20px; white-space:nowrap; letter-spacing:0.08em; font-size:clamp(0.68rem,1.6vw,0.84rem);}
+  .hero-name{font-size:clamp(3.1rem,7.2vw,6.2rem); font-weight:700; letter-spacing:-0.02em; line-height:0.98;
+    animation:heroRise .9s cubic-bezier(.2,.8,.2,1) both;}
+  .hero-role{font-size:clamp(1.35rem,2.5vw,1.8rem); color:var(--amber); font-weight:600; margin-top:16px;
+    animation:heroRise .9s cubic-bezier(.2,.8,.2,1) .12s both;}
+  .hero-company{font-size:1.12rem; color:rgba(255,255,255,0.72); margin-top:6px;
+    animation:heroRise .9s cubic-bezier(.2,.8,.2,1) .2s both;}
+  @media (max-width:640px){.hero-company{font-size:0.86rem;}}
+  @media (max-width:440px){.hero-company{font-size:0.62rem; letter-spacing:-0.01em;}}
+  @keyframes heroRise{from{opacity:0; transform:translateY(16px);} to{opacity:1; transform:translateY(0);}}
+  @media (prefers-reduced-motion:reduce){.hero-name,.hero-role,.hero-company{animation:none;}}
+  .hero-rule{width:64px; height:2px; background:var(--amber); margin:28px 0;}
+  .hero-intro{font-size:1.16rem; line-height:1.75; max-width:54ch; color:rgba(255,255,255,0.92);}
+  .hero-cta{display:flex; gap:14px; margin-top:32px; flex-wrap:wrap;}
+  .hero-photo-wrap{position:relative; justify-self:center; flex-shrink:0;}
+  .hero-assoc{width:100vw; position:relative; left:50%; right:50%; margin-left:-50vw; margin-right:-50vw; margin-top:48px; background:var(--white); padding:14px max(32px, calc(50vw - 590px));}
+  .hero-assoc-inner{display:flex; align-items:center; gap:28px; flex-wrap:wrap;}
+  .hero-assoc-label{flex-shrink:0; color:var(--amber); font-size:0.7rem; letter-spacing:0.14em; text-transform:uppercase; font-weight:700; white-space:nowrap;}
+  .hero-assoc-row{display:flex; flex-wrap:nowrap; align-items:center; justify-content:space-between; gap:20px; overflow-x:auto; -ms-overflow-style:none; scrollbar-width:none; flex:1; min-width:0;}
+  .hero-assoc-row::-webkit-scrollbar{display:none;}
+  .hero-assoc-item{height:30px; display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .hero-assoc-item img{height:100%; width:auto; max-width:104px; object-fit:contain;}
+  @media (max-width:900px){.hero-assoc-inner{flex-direction:column; align-items:flex-start; gap:14px;} .hero-assoc-row{flex-wrap:wrap; row-gap:16px; overflow-x:visible; width:100%;} .hero-assoc-item{height:24px;}}
+  .hero-sub{font-size:1rem; line-height:1.72; max-width:54ch; color:rgba(255,255,255,0.86);}
+  .hero-photo{width:min(300px,78vw); aspect-ratio:4/5; object-fit:cover; border-radius:6px; box-shadow:0 30px 60px -20px rgba(0,0,0,0.6);}
+  .photo-ring{position:absolute; inset:-14px; border:1px solid rgba(252,163,17,0.45); border-radius:10px; z-index:-1;}
+
+  /* ---------- journey: true left/right split ---------- */
+  .journey-meta{display:flex; gap:22px; flex-wrap:wrap; margin-top:16px; margin-bottom:6px;}
+  .journey-meta span{font-size:0.92rem; border-bottom:1px solid var(--line-light); padding-bottom:3px;}
+
+  /* ---------- journey: one continuous vertical timeline, branching left/right ---------- */
+  .vt-head{display:grid; grid-template-columns:1fr 130px 1fr; margin-bottom:2px;}
+  .vt-head .h-left{text-align:right; font-size:0.82rem; letter-spacing:0.14em; text-transform:uppercase; font-weight:700; color:var(--navy-ink); padding-right:30px;}
+  .vt-head .h-right{text-align:left; font-size:0.82rem; letter-spacing:0.14em; text-transform:uppercase; font-weight:700; color:var(--navy-ink); padding-left:30px;}
+  .vtimeline{position:relative;}
+  .vtimeline::before{content:""; position:absolute; left:50%; top:10px; bottom:10px; width:2px; background:linear-gradient(var(--line-light), var(--amber), var(--line-light)); transform:translateX(-50%); z-index:0;}
+  .v-row{display:grid; grid-template-columns:1fr 130px 1fr; align-items:center; position:relative; min-height:108px;}
+  .v-cell{position:relative;}
+  .v-cell.left{padding-right:30px; text-align:right;}
+  .v-cell.right{padding-left:30px; text-align:left;}
+  .v-cell.left.filled::after{content:""; position:absolute; right:0; top:50%; width:20px; height:1px; background:var(--amber); transform:translateY(-50%);}
+  .v-cell.right.filled::before{content:""; position:absolute; left:0; top:50%; width:20px; height:1px; background:var(--amber); transform:translateY(-50%);}
+  .v-center{display:flex; flex-direction:column; align-items:center; gap:6px; position:relative; z-index:2;}
+  .v-dot{width:13px; height:13px; border-radius:50%; background:var(--amber); border:3px solid var(--white);}
+  .bg-light .v-dot{border-color:var(--white);}
+  .v-year{font-size:0.76rem; font-weight:700; color:var(--navy); white-space:nowrap; background:var(--white); padding:1px 6px; border-radius:3px;}
+  .v-role{font-weight:600; font-size:1.04rem;}
+  .v-org{font-size:0.91rem; color:var(--navy-ink); margin-top:3px;}
+  .v-detail{font-size:0.86rem; color:var(--navy-ink); margin-top:6px; line-height:1.55;}
+
+  @media (max-width:760px){
+    .vt-head{grid-template-columns:26px 1fr;}
+    .vt-head .h-left{display:none;}
+    .vt-head .h-right{text-align:left; padding-left:14px;}
+    .vtimeline::before{left:13px;}
+    .v-row{grid-template-columns:26px 1fr; min-height:0; margin-bottom:22px;}
+    .v-center{grid-column:1; flex-direction:row; justify-content:flex-start;}
+    .v-cell.left, .v-cell.right{grid-column:2; text-align:left; padding:0 0 0 14px;}
+    .v-cell.left.filled::after, .v-cell.right.filled::before{display:none;}
+  }
+
+  .narrative-block{margin-top:32px; min-width:0;}
+  .story-section{width:100vw; position:relative; left:50%; right:50%; margin-left:-50vw; margin-right:-50vw; margin-top:44px;}
+  .story-section .narrative-label{padding-left:max(32px, calc(50vw - 590px)); padding-right:max(32px, calc(50vw - 590px));}
+  .story-section .carousel-wrap{margin-top:16px;}
+  .story-section .carousel{padding-left:max(32px, calc(50vw - 590px)); padding-right:max(32px, calc(50vw - 590px));}
+  .story-section .carousel-btn.prev{left:8px;}
+  .story-section .carousel-btn.next{right:8px;}
+  .narrative-label{font-size:0.78rem; letter-spacing:0.12em; text-transform:uppercase; font-weight:700; color:var(--amber); margin-bottom:10px;}
+
+  blockquote.pull{margin:30px 0 0; padding:20px 26px; border-left:3px solid var(--amber); background:var(--paper); border-radius:0 4px 4px 0; width:100%; font-size:0.98rem; line-height:1.65; font-style:italic;}
+  blockquote.pull cite{display:block; margin-top:12px; font-size:0.8rem; color:var(--navy-ink); font-style:normal;}
+
+  /* ---------- shared carousel ---------- */
+  .carousel-wrap{position:relative; margin-top:40px; min-width:0;}
+  .carousel{display:flex; gap:18px; overflow-x:auto; scroll-snap-type:x mandatory; scroll-padding-left:4px; padding:2px 2px 14px; -webkit-overflow-scrolling:touch; scrollbar-width:thin;}
+  .carousel-btn{position:absolute; top:50%; transform:translateY(-50%); width:42px; height:42px; border-radius:50%; border:1px solid var(--line-light); background:var(--white); color:var(--navy); display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:1.1rem; z-index:5; box-shadow:0 10px 24px -12px rgba(20,33,61,0.4); transition:background .15s;}
+  .carousel-btn:hover{background:var(--amber);}
+  .carousel-btn.prev{left:-14px;}
+  .carousel-btn.next{right:-14px;}
+  .bg-dark .carousel-btn{background:var(--navy-mid); border-color:var(--line-dark); color:var(--white);}
+  .bg-dark .carousel-btn:hover{background:var(--amber); color:var(--navy-deep);}
+  @media (max-width:640px){.carousel-btn{display:none;}}
+
+  /* ---------- engagements ---------- */
+  .engage-card{position:relative; border-radius:10px; overflow:hidden; flex:0 0 300px; height:380px; scroll-snap-align:start; cursor:zoom-in;}
+  .engage-card img{width:100%; height:100%; object-fit:cover; display:block; transition:transform .5s ease;}
+  .engage-card:hover img{transform:scale(1.045);}
+  .engage-scrim{position:absolute; inset:0; background:linear-gradient(to top, rgba(10,21,38,0.88) 0%, rgba(10,21,38,0.25) 45%, rgba(10,21,38,0) 70%); pointer-events:none;}
+  .engage-caption{position:absolute; left:0; right:0; bottom:0; padding:20px; color:var(--white);}
+  .engage-tag{font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--amber); font-weight:700;}
+  .engage-caption h4{font-size:1.05rem; font-weight:600; margin-top:5px; color:var(--white);}
+  .engage-caption p{font-size:0.8rem; color:rgba(255,255,255,0.82); margin-top:5px; line-height:1.5; max-width:46ch;}
+
+  /* ---------- pillars ---------- */
+  .pillar-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line-dark); border:1px solid var(--line-dark); margin-top:40px;}
+  @media (max-width:860px){.pillar-grid{grid-template-columns:1fr;}}
+  .pillar{background:rgba(10,21,38,0.55); padding:32px 28px;}
+  .pillar-num{font-size:0.9rem; color:var(--amber); font-weight:700;}
+  .pillar h3{margin-top:12px; font-size:1.2rem; color:var(--white);}
+  .pillar p{margin-top:10px; font-size:0.96rem; color:rgba(255,255,255,0.75); line-height:1.6;}
+  .tag-row{margin-top:16px; display:flex; flex-wrap:wrap; gap:8px;}
+  .tag{font-size:0.78rem; padding:5px 11px; border-radius:3px; border:1px solid var(--line-dark); color:rgba(255,255,255,0.85);}
+
+  /* ---------- tools: buckets with icons ---------- */
+  .bucket-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:22px; margin-top:36px;}
+  @media (max-width:860px){.bucket-grid{grid-template-columns:1fr;}}
+  .bucket{border:1px solid var(--line-light); border-radius:8px; padding:24px 26px; background:rgba(255,255,255,0.55);}
+  .bucket-title{font-size:0.86rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--amber); font-weight:700; padding-bottom:12px; border-bottom:1px solid var(--line-light); -webkit-text-stroke:0.3px var(--navy-deep);}
+  .bucket-tools{margin-top:14px; display:flex; flex-direction:column; gap:11px;}
+  .tool-chip{display:flex; align-items:center; gap:10px; font-size:0.98rem; color:var(--navy);}
+  .tool-chip .tool-icon{color:var(--amber);}
+  .cert-strip{margin-top:30px; display:flex; flex-wrap:wrap; gap:10px; padding-top:20px; border-top:1px solid var(--line-light);}
+  .cert-pill{font-size:0.82rem; padding:8px 14px; border-radius:3px; border:1px solid var(--line-light); color:var(--navy);}
+
+  /* ---------- portfolio ---------- */
+  .stat-strip{display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line-light); border:1px solid var(--line-light); margin-top:28px; margin-bottom:32px;}
+  @media (max-width:720px){.stat-strip{grid-template-columns:repeat(2,1fr);}}
+  .stat-cell{background:rgba(255,255,255,0.7); padding:18px 18px;}
+  .stat-num{font-size:clamp(1.5rem,2.4vw,1.9rem); font-weight:700; color:var(--navy); font-variant-numeric:tabular-nums;}
+  .stat-label{margin-top:4px; font-size:0.84rem; color:var(--navy-ink); line-height:1.4;}
+
+  .case{border:1px solid var(--line-light); border-radius:6px; background:rgba(255,255,255,0.86); margin-top:16px; overflow:hidden;}
+  .case-head{padding:22px 26px; display:grid; grid-template-columns:1fr auto; gap:18px; align-items:start; cursor:pointer;}
+  @media (max-width:640px){.case-head{padding:18px 18px;}}
+  .case-tag{font-size:0.78rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--amber); font-weight:700;}
+  .case-title{font-size:1.2rem; font-weight:600; margin-top:7px;}
+  .case-thesis{margin-top:7px; font-size:0.95rem; color:var(--navy-ink); font-style:italic; max-width:58ch;}
+  .case-metrics{display:flex; gap:24px; flex-wrap:wrap; margin-top:13px;}
+  .case-metric-num{font-weight:700; font-size:1.2rem; color:var(--navy); font-variant-numeric:tabular-nums;}
+  .case-metric-label{font-size:0.77rem; color:var(--navy-ink); margin-top:2px;}
+  .case-toggle{width:34px;height:34px;border-radius:50%;border:1px solid var(--line-light); display:flex;align-items:center;justify-content:center; flex-shrink:0; margin-top:2px; transition:transform .25s ease, background .15s;}
+  .case-toggle::before{content:"+"; font-size:1.15rem; color:var(--navy); line-height:1;}
+  .case.open .case-toggle{transform:rotate(45deg); background:var(--paper);}
+  .case-body{max-height:0; overflow:hidden; transition:max-height .35s ease;}
+  .case.open .case-body{max-height:900px;}
+  .case-body-inner{padding:0 26px 24px; display:grid; grid-template-columns:repeat(3,1fr); gap:20px; border-top:1px solid var(--line-light); margin-top:4px; padding-top:20px;}
+  @media (max-width:640px){.case-body-inner{grid-template-columns:1fr; padding-left:18px; padding-right:18px;}}
+  .case-col-label{font-size:0.75rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--amber); font-weight:700; margin-bottom:6px;}
+  .case-col p{font-size:0.89rem; line-height:1.58; color:var(--navy);}
+
+  .venture{margin-top:22px; border:1px dashed var(--line-light); border-radius:6px; padding:22px 26px; display:flex; justify-content:space-between; align-items:center; gap:24px; flex-wrap:wrap; background:var(--paper);}
+  .venture-text{flex:1 1 260px;}
+  .venture h4{font-size:1.02rem; font-weight:600;}
+  .venture p{font-size:0.87rem; color:var(--navy-ink); margin-top:6px; max-width:52ch;}
+  .browser-glimpse{width:300px; max-width:100%; border-radius:8px; overflow:hidden; border:1px solid var(--line-light); background:var(--white); box-shadow:0 16px 32px -18px rgba(20,33,61,0.3); flex-shrink:0;}
+  .browser-chrome{display:flex; align-items:center; gap:6px; padding:8px 10px; background:#eceef1; border-bottom:1px solid var(--line-light);}
+  .browser-dot{width:7px;height:7px;border-radius:50%;background:#c7cbd1;}
+  .browser-url{margin-left:6px; font-size:0.68rem; color:var(--navy-ink); background:var(--white); border-radius:3px; padding:2px 8px; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .browser-glimpse img{width:100%; display:block;}
+
+  /* ---------- methodology diagram (no third-party screenshots/logos) ---------- */
+  .gallery-block{margin-top:44px; padding-top:36px; border-top:1px solid var(--line-light);}
+  .gallery-note{font-size:0.88rem; color:var(--navy-ink); font-style:italic; max-width:70ch; margin-top:10px; line-height:1.6;}
+  .method-row{display:flex; align-items:stretch; gap:14px; margin-top:28px;}
+  @media (max-width:860px){.method-row{flex-direction:column;}}
+  .method-card{flex:1; border:1px solid var(--line-light); border-radius:8px; padding:24px 22px; background:var(--white);}
+  .method-icon{width:26px; height:26px; color:var(--amber);}
+  .method-card .funnel-stage{font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--amber); font-weight:700; margin-top:14px;}
+  .method-card h4{font-size:1.05rem; font-weight:600; margin-top:6px;}
+  .method-card p{font-size:0.86rem; color:var(--navy-ink); margin-top:8px; line-height:1.55;}
+  .method-arrow{display:flex; align-items:center; justify-content:center; font-size:1.3rem; color:var(--line-light); flex:0 0 auto;}
+  @media (max-width:860px){.method-arrow{transform:rotate(90deg); margin:-6px auto;}}
+
+  .doc-link-card{margin-top:22px; display:flex; align-items:center; gap:18px; border:1px solid var(--line-light); border-radius:8px; padding:22px 24px; background:var(--white); text-decoration:none; color:var(--navy); transition:transform .15s, box-shadow .15s;}
+  .doc-link-card:hover{transform:translateY(-2px); box-shadow:0 14px 28px -16px rgba(20,33,61,0.28);}
+  .doc-link-card .method-icon{flex-shrink:0;}
+  .doc-link-card h4{font-size:1rem; font-weight:600;}
+  .doc-link-card p{font-size:0.84rem; color:var(--navy-ink); margin-top:4px;}
+
+  .brochure-section{width:100vw; position:relative; left:50%; right:50%; margin-left:-50vw; margin-right:-50vw; margin-top:28px; margin-bottom:28px; background:var(--paper); padding:36px max(32px, calc(50vw - 590px));}
+  .brochure-row{display:flex; gap:28px; flex-wrap:wrap; justify-content:space-between;}
+  .brochure-card{cursor:zoom-in; border-radius:8px; overflow:hidden; border:1px solid var(--line-light); box-shadow:0 18px 36px -20px rgba(20,33,61,0.3); flex:1 1 280px; transition:transform .15s;}
+  .brochure-card:hover{transform:translateY(-4px);}
+  .brochure-card img{width:100%; display:block;}
+  .brochure-caption{text-align:center; margin-top:20px; font-size:0.84rem; color:var(--navy-ink);}
+  .brochure-caption a{color:var(--amber); font-weight:600; text-decoration:underline;}
+
+  #lightbox{position:fixed; inset:0; background:rgba(10,21,38,0.96); z-index:400; display:none; align-items:center; justify-content:center; padding:24px; cursor:zoom-out; overflow-y:auto;}
+  #lightbox.open{display:flex;}
+  #lightbox-panel{max-width:96vw; width:fit-content; cursor:default; margin:auto;}
+  #lightbox img{display:block; width:auto; max-width:100%; height:auto; max-height:88vh; object-fit:contain; border-radius:6px 6px 0 0; box-shadow:0 30px 60px -20px rgba(0,0,0,0.6); background:var(--navy-deep); margin:0 auto;}
+  #lightbox-caption{background:var(--white); border-radius:0 0 6px 6px; padding:18px 22px;}
+  #lightbox-caption .lb-tag{font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--amber); font-weight:700;}
+  #lightbox-caption h4{font-size:1.1rem; font-weight:600; color:var(--navy); margin-top:6px;}
+  #lightbox-caption p{font-size:0.88rem; color:var(--navy-ink); margin-top:6px; line-height:1.6;}
+  #lightbox-caption:empty{display:none;}
+  #lightbox-close{position:fixed; top:22px; right:26px; width:40px; height:40px; border-radius:50%; border:1px solid rgba(255,255,255,0.35); color:var(--white); background:none; font-size:1.2rem; cursor:pointer; z-index:401;}
+
+  /* ---------- testimonials ---------- */
+  .testi-card{border:1px solid var(--line-light); border-radius:10px; padding:28px 26px; background:rgba(255,255,255,0.88); display:flex; flex-direction:column; flex:0 0 340px; height:auto; scroll-snap-align:start; cursor:zoom-in;}
+
+  /* ---------- story carousel (hero) ---------- */
+  .story-card{border:1px solid rgba(255,255,255,0.18); border-radius:10px; padding:20px 20px; background:rgba(255,255,255,0.06); flex:0 0 220px; scroll-snap-align:start; cursor:zoom-in; transition:background .15s, border-color .15s;}
+  .story-card:hover{background:rgba(255,255,255,0.1); border-color:rgba(252,163,17,0.5);}
+  .story-tag{font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--amber); font-weight:700;}
+  .story-short{font-size:0.9rem; line-height:1.5; color:rgba(255,255,255,0.88); margin-top:8px;}
+  .testi-quote-mark{font-size:2.2rem; color:var(--amber); line-height:1; font-weight:700;}
+  .testi-text{font-size:0.96rem; line-height:1.68; color:var(--navy); flex:1; margin-top:6px;}
+  .testi-person{display:flex; align-items:center; gap:14px; margin-top:22px; padding-top:18px; border-top:1px solid var(--line-light);}
+  .testi-linkedin{margin-left:auto; flex-shrink:0; width:30px; height:30px; border-radius:50%; border:1px solid #0A66C2; display:flex; align-items:center; justify-content:center; color:#0A66C2; transition:background .15s, color .15s, border-color .15s;}
+  .testi-linkedin:hover{background:#0A66C2; border-color:#0A66C2; color:var(--white);}
+  .testi-linkedin svg{width:16px; height:16px;}
+  .testi-photo{width:54px; height:54px; border-radius:50%; object-fit:cover; flex-shrink:0; border:1px solid var(--line-light);}
+  .testi-icon{width:54px; height:54px; border-radius:50%; flex-shrink:0; background:var(--paper); border:1px solid var(--line-light); display:flex; align-items:center; justify-content:center; color:var(--navy); font-weight:700; font-size:0.95rem; letter-spacing:0.02em;}
+  .testi-name{font-weight:600; font-size:0.96rem;}
+  .testi-role{font-size:0.8rem; color:var(--navy-ink); margin-top:2px; line-height:1.4;}
+  .testi-location{font-size:0.74rem; color:var(--navy-ink); opacity:0.75; margin-top:3px; letter-spacing:0.02em;}
+
+  /* ---------- contact ---------- */
+  .contact-grid{display:grid; grid-template-columns:1.1fr 0.9fr; gap:56px; align-items:center;}
+  @media (max-width:860px){.contact-grid{grid-template-columns:1fr; gap:32px;}}
+  .contact-list{margin-top:22px; display:flex; flex-direction:column; gap:12px;}
+  .contact-list a{display:flex; justify-content:space-between; text-decoration:none; color:var(--white); padding:14px 0; border-bottom:1px solid var(--line-dark); font-size:1.05rem;}
+  .contact-list a .k{font-size:0.78rem; color:rgba(255,255,255,0.6); text-transform:uppercase; letter-spacing:0.08em;}
+  .contact-list a span.v{font-weight:600;}
+
+  footer{padding:22px 0; background:var(--navy-deep);}
+  .foot-row{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;}
+  .foot-row p{font-size:0.84rem; color:rgba(255,255,255,0.5);}
+</style>
+</head>
+<body>
+
+<!-- custom icon sprite: consistent monoline glyphs standing in for tool logos -->
+<svg style="display:none" aria-hidden="true">
+  <symbol id="i-flow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="5" cy="12" r="2.1"/><circle cx="12" cy="6" r="2.1"/><circle cx="12" cy="18" r="2.1"/><circle cx="19" cy="12" r="2.1"/>
+    <path d="M7 12h2.3M14 7.3l2.7 2.7M14 16.7l2.7-2.7"/>
+  </symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3z"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="0.9" fill="currentColor"/></symbol>
+  <symbol id="i-route" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 18c4 0 4-12 8-12s4 12 8 12" stroke-dasharray="1 4.2"/><circle cx="20" cy="18" r="1.3" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-crosshair" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="7"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6l7-3z"/><path d="M9 12.2l2 2 4-4.2"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="8"/><path d="M4 12h16M12 4c2.6 2.5 2.6 13.5 0 16M12 4c-2.6 2.5-2.6 13.5 0 16"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-5-5"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M9 15l6-6"/><path d="M8 16l-2 2a3.5 3.5 0 01-5-5l3-3a3.5 3.5 0 015-1"/><path d="M16 8l2-2a3.5 3.5 0 015 5l-3 3a3.5 3.5 0 01-5 1"/></symbol>
+  <symbol id="i-bar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V11M10 20V4M16 20v-6"/><path d="M3 20h18"/></symbol>
+  <symbol id="i-ticket" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M5 3v18"/><path d="M5 4h12l-3 4 3 4H5"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/><path d="M9.5 12h5M9.5 15h5"/></symbol>
+  <symbol id="i-kanban" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 7v7M13 7v4M18 7v10"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></symbol>
+  <symbol id="i-cycle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 0113-6"/><path d="M20 12a8 8 0 01-13 6"/><path d="M17 4v3h-3M7 20v-3h3"/></symbol>
+  <symbol id="i-linkedin" viewBox="0 0 24 24" fill="currentColor"><path d="M6.94 5a1.94 1.94 0 11-3.88 0 1.94 1.94 0 013.88 0zM3.5 8.75h3.38V20.5H3.5V8.75zm6.56 0h3.24v1.6h.05c.45-.85 1.56-1.75 3.21-1.75 3.43 0 4.06 2.26 4.06 5.2v6.7h-3.38v-5.94c0-1.42-.03-3.24-1.98-3.24-1.98 0-2.28 1.55-2.28 3.14v6.04h-3.38V8.75z"/></symbol>
+</svg>
+
+<div id="trace"></div>
+
+<header>
+  <div class="container nav-row">
+    <a class="brand" href="#home">Megha Singh</a>
+    <nav class="links">
+      <a href="#about">About</a>
+      <a href="#engagements">Engagements</a>
+      <a href="#portfolio">Portfolio</a>
+      <a href="#competencies">Competencies</a>
+      <a href="#tools">Tools</a>
+      <a href="#testimonials">Testimonials</a>
+    </nav>
+    <a class="nav-cta" href="#contact">Get in touch</a>
+    <button id="menu-btn" aria-label="Open menu" aria-expanded="false"><span></span></button>
+  </div>
+  <div id="mobile-menu" class="container">
+    <a href="#about">About</a>
+    <a href="#engagements">Engagements</a>
+    <a href="#portfolio">Portfolio</a>
+    <a href="#competencies">Competencies</a>
+    <a href="#tools">Tools</a>
+    <a href="#testimonials">Testimonials</a>
+    <a href="#contact">Contact</a>
+  </div>
+</header>
+
+<nav id="dotnav" aria-label="Section navigation">
+  <a href="#home" data-label="Home" data-target="home" class="on-dark"></a>
+  <a href="#about" data-label="About" data-target="about"></a>
+  <a href="#engagements" data-label="Engagements" data-target="engagements" class="on-dark"></a>
+  <a href="#portfolio" data-label="Portfolio" data-target="portfolio"></a>
+  <a href="#competencies" data-label="Competencies" data-target="competencies" class="on-dark"></a>
+  <a href="#tools" data-label="Tools" data-target="tools"></a>
+  <a href="#testimonials" data-label="Testimonials" data-target="testimonials"></a>
+  <a href="#contact" data-label="Contact" data-target="contact" class="on-dark"></a>
+</nav>
+
+<!-- ================= HERO ================= -->
+<section id="home" class="slide bg-dark">
+  <div class="container slide-inner">
+    <div class="hero-grid">
+      <div>
+        <p class="eyebrow hero-tag">Available Immediately &middot; No Visa Sponsorship Required</p>
+        <h1 class="hero-name">Megha Singh</h1>
+        <p class="hero-role">AI Marketing Operations</p>
+        <p class="hero-company">Content Strategy &amp; Enablement &middot; IT Consultant &middot; Co-Founder &middot; Masters Entrepreneurship &amp; Digital Transformation &middot; B.Tech Information Technology</p>
+        <div class="hero-rule"></div>
+        <p class="hero-intro">AI Marketing Operations specialist with six years spent turning complexity into working systems: enterprise IT consulting, a self-built startup, and now AI-driven marketing automation inside one of the world&rsquo;s largest semiconductor companies. Based in Munich, originally from India. Right now, I am not just using AI tools. I am designing how marketing teams run on them.</p>
+
+        <div class="hero-cta">
+          <a class="btn btn-solid" href="#portfolio">View Portfolio</a>
+          <a class="btn btn-outline" href="#contact">Get in Touch</a>
+        </div>
+      </div>
+      <div class="hero-photo-wrap">
+        <div class="photo-ring"></div>
+        <img class="hero-photo" src="assets/megha-photo.jpg" alt="Portrait of Megha Singh" />
+      </div>
+    </div>
+
+    <div class="hero-assoc" data-reveal>
+      <div class="hero-assoc-inner">
+        <p class="hero-assoc-label">Associated With</p>
+        <div class="hero-assoc-row">
+          <div class="hero-assoc-item"><img src="assets/logo-infineon.webp" alt="Infineon Technologies AG" /></div>
+          <div class="hero-assoc-item"><img src="assets/logo-eit-urban-mobility.png" alt="EIT Urban Mobility" /></div>
+          <div class="hero-assoc-item"><img src="assets/logo-hochschule-muenchen.webp" alt="Hochschule M&uuml;nchen" /></div>
+          <div class="hero-assoc-item"><img src="assets/logo-wipro.webp" alt="Wipro Limited" /></div>
+          <div class="hero-assoc-item"><img src="assets/logo-charles-schwab.svg" alt="Charles Schwab Corporation" /></div>
+          <div class="hero-assoc-item"><img src="assets/logo-bit-sindri.png" alt="BIT Sindri" /></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="narrative-block story-section">
+      <p class="narrative-label">My Story &middot; click a chapter</p>
+      <div class="carousel-wrap">
+        <button class="carousel-btn prev" onclick="scrollCarousel('story-track',-1)" aria-label="Previous">&larr;</button>
+        <button class="carousel-btn next" onclick="scrollCarousel('story-track',1)" aria-label="Next">&rarr;</button>
+        <div class="carousel" id="story-track">
+          <div class="story-card" data-full="I grew up in Jamshedpur, India, the steel city JRD Tata built. Watching one person's vision turn into an entire city's infrastructure taught me early what ambition actually looks like when it is finished, not just promised.">
+            <p class="story-tag">Where It All Began</p>
+            <p class="story-short">I grew up in the city JRD Tata built around a steel plant.</p>
+          </div>
+          <div class="story-card" data-full="I studied Information Technology at BIT Sindri, one of India's oldest public engineering colleges, while most of my classmates were choosing mechanical or civil. I could already see digitisation coming for every industry, so I bet on the systems underneath it instead of the industry itself.">
+            <p class="story-tag">An Early Bet</p>
+            <p class="story-short">I chose Information Technology before most people saw where industries were heading.</p>
+          </div>
+          <div class="story-card" data-full="I started my career at Wipro, a company that reinvented itself from a vegetable oil business into a global technology leader under Azim Premji. I spent three and a half years delivering for Charles Schwab in the US, learning enterprise systems from the inside.">
+            <p class="story-tag">An Unlikely Tech Giant</p>
+            <p class="story-short">Wipro once sold vegetable oil. By the time I joined, it was a global tech giant.</p>
+          </div>
+          <div class="story-card" data-full="I co-founded Hello Sales, a distribution startup, and digitised it myself at a time when internet adoption among our own distributors was still low. I learned that technology adoption is a sales problem before it is a technical one.">
+            <p class="story-tag">Built From Zero</p>
+            <p class="story-short">I co-founded a startup and sold distributors on an app, one at a time.</p>
+          </div>
+          <div class="story-card" data-full="I went back to school for a reason: IELTS, GMAT, and an application to Hochschule M&uuml;nchen's Entrepreneurship and Digital Transformation programme. I did not wait for the degree to finish before building something with it. Alongside the Master's, I joined Infineon as a working student and co-built About Watt, a second life EV battery venture, through the EIT Urban Mobility fellowship, running both commitments on the same clock.">
+            <p class="story-tag">Two Threads, One City</p>
+            <p class="story-short">IELTS, GMAT, Hochschule M&uuml;nchen. Then an EV battery startup and Infineon at once.</p>
+          </div>
+          <div class="story-card" data-full="I ask what a tool is actually for before I adopt it, and I measure what it changes, not just that it is new. I would rather be known for the workflow that saves a team six hours a week than for knowing the name of every AI tool on the market. Build the system once, document it, and make sure it outlives you. That is the whole philosophy.">
+            <p class="story-tag">The Operating Principle</p>
+            <p class="story-short">I judge a tool by what it changes, not by how new it is.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ABOUT / JOURNEY ================= -->
+<section id="about" class="slide bg-light">
+  <div class="container slide-inner">
+    <p class="eyebrow accent">About</p>
+    <h2 class="section-title">The Journey</h2>
+    <p class="lede" style="margin-top:14px; max-width:none; width:100%;">Six years turning complexity into working systems: information technology, enterprise IT consulting, a founded business, and marketing operations inside a DAX&#8209;listed semiconductor company. The full story is on the first page. Here is how it maps onto a timeline.</p>
+    <div class="journey-meta muted">
+      <span>Delivered inside</span><span>Infineon Technologies</span><span>Wipro &middot; Charles Schwab</span><span>Hello Sales Corporation</span>
+    </div>
+
+    <div data-reveal>
+      <div class="vt-head">
+        <div class="h-left">Education</div><div></div><div class="h-right">Experience</div>
+      </div>
+      <div class="vtimeline">
+
+        <div class="v-row">
+          <div class="v-cell left"></div>
+          <div class="v-center"><span class="v-dot"></span><span class="v-year">Mar 2025</span></div>
+          <div class="v-cell right filled">
+            <div class="v-role">Infineon Technologies AG</div>
+            <div class="v-org">Content Strategy &amp; Enablement, Automotive</div>
+            <div class="v-detail">Alongside the Master&rsquo;s, full-time. Through September 2026.</div>
+          </div>
+        </div>
+
+        <div class="v-row">
+          <div class="v-cell left filled">
+            <div class="v-role">Masters in Entrepreneurship &amp; Digital Transformation</div>
+            <div class="v-org">Hochschule M&uuml;nchen</div>
+            <div class="v-detail">GPA 1.4. Through May 2026.</div>
+          </div>
+          <div class="v-center"><span class="v-dot"></span><span class="v-year">Oct 2024</span></div>
+          <div class="v-cell right"></div>
+        </div>
+
+        <div class="v-row">
+          <div class="v-cell left"></div>
+          <div class="v-center"><span class="v-dot"></span><span class="v-year">2022</span></div>
+          <div class="v-cell right filled">
+            <div class="v-role">Co-Founder</div>
+            <div class="v-org">Hello Sales Corporation, India</div>
+            <div class="v-detail">37% distributor sales growth across 25+ accounts.</div>
+          </div>
+        </div>
+
+        <div class="v-row">
+          <div class="v-cell left"></div>
+          <div class="v-center"><span class="v-dot"></span><span class="v-year">2019</span></div>
+          <div class="v-cell right filled">
+            <div class="v-role">IT Consultant</div>
+            <div class="v-org">Wipro &middot; Charles Schwab, USA</div>
+            <div class="v-detail">2,500+ stories resolved, CI/CD cutting deployment time 43%.</div>
+          </div>
+        </div>
+
+        <div class="v-row">
+          <div class="v-cell left filled">
+            <div class="v-role">B.Tech, Information Technology</div>
+            <div class="v-org">BIT Sindri, Vinoba Bhave University</div>
+            <div class="v-detail">Distinction, GPA 7.9/10.</div>
+          </div>
+          <div class="v-center"><span class="v-dot"></span><span class="v-year">2015</span></div>
+          <div class="v-cell right"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <blockquote class="pull" data-reveal>
+      &ldquo;Her earlier professional experience in IT consulting enabled her to act as a genuine bridge between our technical IT colleagues and our marketing stakeholders, which proved decisive in the acceptance and adoption of the automation and AI initiatives she led.&rdquo;
+      <cite>Qualified Employment Reference &middot; Infineon Technologies AG &middot; 14 September 2026</cite>
+    </blockquote>
+  </div>
+</section>
+
+<!-- ================= ENGAGEMENTS ================= -->
+<section id="engagements" class="slide bg-dark">
+  <div class="container slide-inner">
+    <p class="eyebrow accent">Field &amp; Industry</p>
+    <h2 class="section-title" style="color:var(--white)">Where the work happens outside the desk.</h2>
+    <p class="lede muted" style="margin-top:12px;">Trade floors, teammates, and the industry events that feed both the day job and About&#8209;Watt.</p>
+
+    <div class="carousel-wrap" data-reveal>
+      <button class="carousel-btn prev" onclick="scrollCarousel('engage-track',-1)" aria-label="Previous">&larr;</button>
+      <button class="carousel-btn next" onclick="scrollCarousel('engage-track',1)" aria-label="Next">&rarr;</button>
+      <div class="carousel" id="engage-track">
+      <div class="engage-card">
+        <img src="assets/event-intersolar.jpg" alt="Megha Singh at Intersolar Europe / The smarter E, Messe M&uuml;nchen" loading="lazy" />
+        <div class="engage-scrim"></div>
+        <div class="engage-caption">
+          <p class="engage-tag">Intersolar Europe &middot; The smarter E</p>
+          <h4>Messe M&uuml;nchen</h4>
+          <p>Primary research on the energy-storage and e-mobility market floor, with direct input into About-Watt&rsquo;s second-life battery positioning.</p>
+        </div>
+      </div>
+      <div class="engage-card">
+        <img src="assets/event-embeddedworld.jpg" alt="Megha Singh at embedded world exhibition" loading="lazy" />
+        <div class="engage-scrim"></div>
+        <div class="engage-caption">
+          <p class="engage-tag">embedded world</p>
+          <h4>Exhibition &amp; Conference</h4>
+          <p>Tracking how Infineon&rsquo;s marketing translates onto the trade-show floor.</p>
+        </div>
+      </div>
+      <div class="engage-card">
+        <img src="assets/event-productlaunch.jpg" alt="Megha Singh with project and campaign managers planning an automotive product launch" loading="lazy" />
+        <div class="engage-scrim"></div>
+        <div class="engage-caption">
+          <p class="engage-tag">Infineon Automotive</p>
+          <h4>&ldquo;Driving Decarbonisation and Digitalisation. Together.&rdquo;</h4>
+          <p>With project and campaign managers across product lines, planning marketing for this automotive launch campaign.</p>
+        </div>
+      </div>
+      <div class="engage-card">
+        <img src="assets/event-aboutwatt-pitch.jpg" alt="Megha Singh presenting the About-Watt project pitch" loading="lazy" />
+        <div class="engage-scrim"></div>
+        <div class="engage-caption">
+          <p class="engage-tag">About-Watt &middot; EIT Urban Mobility</p>
+          <h4>Project Pitch</h4>
+          <p>&ldquo;From Road to Home: Power Your Home with Every Watt&rdquo;: presenting the second-life battery business case to partners and reviewers.</p>
+        </div>
+      </div>
+      <div class="engage-card">
+        <img src="assets/event-sce.jpg" alt="Megha Singh with the EIT Urban Mobility team outside the Strascheg Center for Entrepreneurship" loading="lazy" />
+        <div class="engage-scrim"></div>
+        <div class="engage-caption">
+          <p class="engage-tag">Strascheg Center for Entrepreneurship</p>
+          <h4>HM Munich</h4>
+          <p>With the diverse, four-country EIT Urban Mobility team outside SCE, Hochschule M&uuml;nchen&rsquo;s entrepreneurship centre.</p>
+        </div>
+      </div>
+      <div class="engage-card">
+        <img src="assets/event-infineon-booth.jpg" alt="Megha Singh representing Infineon at the embedded world booth in Nuremberg" loading="lazy" />
+        <div class="engage-scrim"></div>
+        <div class="engage-caption">
+          <p class="engage-tag">embedded world &middot; Nuremberg</p>
+          <h4>Infineon Booth, Automotive</h4>
+          <p>Representing Infineon on the floor for the automotive headlights and sensors product launch.</p>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PORTFOLIO ================= -->
+<section id="portfolio" class="slide bg-light">
+  <div class="container slide-inner">
+    <p class="eyebrow accent">Portfolio</p>
+    <h2 class="section-title">Five mandates, measured end to end.</h2>
+    <p class="lede" style="margin-top:10px;">Each one follows the same discipline: a named tool, a verified figure, and a commercial consequence. Open a case for the full method.</p>
+
+    <div class="stat-strip" data-reveal>
+      <div class="stat-cell"><div class="stat-num" data-count="2389">0</div><div class="stat-label">Jira tickets triaged by a single n8n workflow</div></div>
+      <div class="stat-cell"><div class="stat-num" data-prefix="&euro;" data-count="430" data-suffix="K">0</div><div class="stat-label">Agency spend addressed by an internal GenAI workflow</div></div>
+      <div class="stat-cell"><div class="stat-num" data-count="70" data-suffix="%">0</div><div class="stat-label">Faster content production in the Jasper.ai pilot</div></div>
+      <div class="stat-cell"><div class="stat-num" data-count="18" data-suffix=" mos">0</div><div class="stat-label">Marketing operations &amp; AI automation at Infineon</div></div>
+    </div>
+
+    <div id="case-list">
+      <article class="case">
+        <div class="case-head" onclick="toggleCase(this)">
+          <div>
+            <p class="case-tag">Case One &middot; AI in Marketing &middot; Infineon Automotive</p>
+            <h3 class="case-title">Multi-agent GenAI workflow for marketing collateral</h3>
+            <p class="case-thesis">&ldquo;Product decks were bought from an external agency at four figures each. I built the internal alternative and quantified it.&rdquo;</p>
+            <div class="case-metrics">
+              <div><div class="case-metric-num">&euro;1,100 to &euro;1,400</div><div class="case-metric-label">agency cost per deck, replaced</div></div>
+              <div><div class="case-metric-num">3.5h</div><div class="case-metric-label">internal effort per deck</div></div>
+              <div><div class="case-metric-num">~&euro;430K</div><div class="case-metric-label">agency spend addressed, 355 docs</div></div>
+            </div>
+          </div>
+          <span class="case-toggle"></span>
+        </div>
+        <div class="case-body"><div class="case-body-inner">
+          <div class="case-col"><div class="case-col-label">Challenge</div><p>High-quality product decks depended on external agency production: slow, expensive, and unable to keep pace with content demand across five business divisions.</p></div>
+          <div class="case-col"><div class="case-col-label">Approach</div><p>Ran a documented comparison of Jasper.ai against ChatGPT on five defined criteria, then sequenced multiple AI agents for drafting, structuring and formatting, pre-filled from product data exports, with output mapped onto the approved brand template.</p></div>
+          <div class="case-col"><div class="case-col-label">Result</div><p>Same-day internal turnaround replacing agency lead times, a defensible basis for the department&rsquo;s tooling decisions, and roughly &euro;430K of agency spend addressed across a 355-document update programme.</p></div>
+        </div></div>
+      </article>
+
+      <article class="case">
+        <div class="case-head" onclick="toggleCase(this)">
+          <div>
+            <p class="case-tag">Case Two &middot; AI in Marketing &middot; Infineon Automotive</p>
+            <h3 class="case-title">Jasper.ai enterprise AI pilot</h3>
+            <p class="case-thesis">&ldquo;One of five employees globally with licensed access, selected on the ability to evaluate AI tool integration into live marketing workflows.&rdquo;</p>
+            <div class="case-metrics">
+              <div><div class="case-metric-num">70%</div><div class="case-metric-label">faster content vs. manual baseline</div></div>
+              <div><div class="case-metric-num">19</div><div class="case-metric-label">content use cases tested</div></div>
+              <div><div class="case-metric-num">100%</div><div class="case-metric-label">brand-compliant after review</div></div>
+            </div>
+          </div>
+          <span class="case-toggle"></span>
+        </div>
+        <div class="case-body"><div class="case-body-inner">
+          <div class="case-col"><div class="case-col-label">Challenge</div><p>Five business divisions generated hundreds of pieces of content every month: product copy, social, campaign and event materials, manually, slowly and inconsistently.</p></div>
+          <div class="case-col"><div class="case-col-label">Approach</div><p>Mapped 19 content-type use cases across two business lines, built Infineon-specific brand templates and custom prompts in Jasper.ai, then tracked time saved against the manual baseline with SOPs documented in Confluence.</p></div>
+          <div class="case-col"><div class="case-col-label">Result</div><p>70% faster content production, feeding directly into a Master&rsquo;s thesis on consumer trust in AI-generated content, research and operational work as one continuous piece, with a rollout playbook now in controlled expansion.</p></div>
+        </div></div>
+      </article>
+
+      <article class="case">
+        <div class="case-head" onclick="toggleCase(this)">
+          <div>
+            <p class="case-tag">Case Three &middot; AI Automation &middot; Infineon Automotive</p>
+            <h3 class="case-title">Jira triage automation in n8n</h3>
+            <p class="case-thesis">&ldquo;The team was hand-sorting every incoming marketing request. I replaced that with a workflow.&rdquo;</p>
+            <div class="case-metrics">
+              <div><div class="case-metric-num">2,389</div><div class="case-metric-label">tickets processed, 8 months live</div></div>
+              <div><div class="case-metric-num">8h &rarr; &lt;1h</div><div class="case-metric-label">request-to-owner notification</div></div>
+              <div><div class="case-metric-num">~330h</div><div class="case-metric-label">team capacity returned per year</div></div>
+            </div>
+          </div>
+          <span class="case-toggle"></span>
+        </div>
+        <div class="case-body"><div class="case-body-inner">
+          <div class="case-col"><div class="case-col-label">Challenge</div><p>Marketing requests arrived in Jira with no routing logic. Tickets sat unsorted, and assignment depended on one person remembering who owned what.</p></div>
+          <div class="case-col"><div class="case-col-label">Approach</div><p>Built three parallel n8n branches running hourly: product-line extraction from free-text descriptions applied as labels, a routing model mapping 15+ product lines to four owners, and Webex status alerts with unassigned requests flagged for review.</p></div>
+          <div class="case-col"><div class="case-col-label">Result</div><p>4.5 to 7 minutes of manual handling eliminated per request. Routing accuracy no longer depends on memory, the system scales through launch and campaign volume surges at no extra effort, and every action is logged into an audit trail that didn&rsquo;t exist before.</p></div>
+        </div></div>
+      </article>
+
+      <article class="case">
+        <div class="case-head" onclick="toggleCase(this)">
+          <div>
+            <p class="case-tag">Case Four &middot; Content Strategy &middot; Infineon Automotive</p>
+            <h3 class="case-title">Content governance from an invisible backlog</h3>
+            <p class="case-thesis">&ldquo;Nobody knew how stale the marketing library had become. I made it measurable, then made it a programme.&rdquo;</p>
+            <div class="case-metrics">
+              <div><div class="case-metric-num">418</div><div class="case-metric-label">outdated assets identified</div></div>
+              <div><div class="case-metric-num">355</div><div class="case-metric-label">updates scoped into a governed queue</div></div>
+              <div><div class="case-metric-num">&euro;70K</div><div class="case-metric-label">programme budget managed</div></div>
+            </div>
+          </div>
+          <span class="case-toggle"></span>
+        </div>
+        <div class="case-body"><div class="case-body-inner">
+          <div class="case-col"><div class="case-col-label">Challenge</div><p>No one could say how much of the content library was out of date, or which pieces actually mattered to prioritise.</p></div>
+          <div class="case-col"><div class="case-col-label">Approach</div><p>Cross-referenced document age against download volume: older than four years, more than 25 downloads, segmented by type (235 product decks, 109 app notes, 74 application decks), and cross-checked against OKR priorities.</p></div>
+          <div class="case-col"><div class="case-col-label">Result</div><p>Backlog converted into a tracked Trello queue, agency scope and quotations managed across two delivery batches, run inside a &euro;70K budget with quarterly reporting made repeatable.</p></div>
+        </div></div>
+      </article>
+
+      <article class="case">
+        <div class="case-head" onclick="toggleCase(this)">
+          <div>
+            <p class="case-tag">Case Five &middot; Go-To-Market &middot; Hello Sales Corporation</p>
+            <h3 class="case-title">Dual-brand market entry, built from zero</h3>
+            <p class="case-thesis">&ldquo;Two brands, zero regional infrastructure, three channels, from day one.&rdquo;</p>
+            <div class="case-metrics">
+              <div><div class="case-metric-num">+37%</div><div class="case-metric-label">distributor sales growth</div></div>
+              <div><div class="case-metric-num">50 to 200</div><div class="case-metric-label">retail outlets activated</div></div>
+              <div><div class="case-metric-num">3 mos</div><div class="case-metric-label">to consistent monthly sales targets</div></div>
+            </div>
+          </div>
+          <span class="case-toggle"></span>
+        </div>
+        <div class="case-body"><div class="case-body-inner">
+          <div class="case-col"><div class="case-col-label">Challenge</div><p>Organic Tattva (zero awareness, premium organic positioning) and McVitie&rsquo;s (strong national equity, zero regional presence) both needed a first-ever distributor built from scratch across two Indian states, across three channels at once.</p></div>
+          <div class="case-col"><div class="case-col-label">Approach</div><p>Tiered retailer incentive and margin schemes to overcome stocking reluctance, 15 to 30 in-store activations across general trade, modern trade and e-commerce, outlet-level demand forecasting via a proprietary app, and renegotiated credit terms to accelerate cash rotation.</p></div>
+          <div class="case-col"><div class="case-col-label">Result</div><p>Consistent monthly sales targets hit for both brands within three months, 37% growth in distributor sales across the regional network, and high distributor retention through loyalty incentive design.</p></div>
+        </div></div>
+      </article>
+    </div>
+
+    <div class="gallery-block" data-reveal>
+      <p class="case-tag">Method &middot; Eloqua Nurture Programme</p>
+      <h3 class="case-title">How the three-stage funnel was sequenced</h3>
+      <p class="gallery-note">No screenshots here by design. The creative itself is Infineon&rsquo;s internal, trademarked material, not mine to republish. What follows is my own diagram of the method: each stage uses a different CTA grammar, moving a reader from curiosity to a named-SKU purchase link.</p>
+      <div class="method-row">
+        <div class="method-card">
+          <svg class="method-icon"><use href="#i-mail"/></svg>
+          <p class="funnel-stage">01 &middot; Awareness</p>
+          <h4>Soft introduction</h4>
+          <p>Broad product story, low-commitment CTAs: a block diagram and an application brochure, both just a click away.</p>
+          <div class="tag-row"><span class="tag" style="border-color:var(--line-light); color:var(--navy-ink);">Discover here</span><span class="tag" style="border-color:var(--line-light); color:var(--navy-ink);">Download here</span></div>
+        </div>
+        <div class="method-arrow">&rarr;</div>
+        <div class="method-card">
+          <svg class="method-icon"><use href="#i-search"/></svg>
+          <p class="funnel-stage">02 &middot; Consideration</p>
+          <h4>Technical proof</h4>
+          <p>Depth over breadth: an application note, design support materials and a user manual build engineering trust.</p>
+          <div class="tag-row"><span class="tag" style="border-color:var(--line-light); color:var(--navy-ink);">Explore here</span><span class="tag" style="border-color:var(--line-light); color:var(--navy-ink);">Download here</span></div>
+        </div>
+        <div class="method-arrow">&rarr;</div>
+        <div class="method-card">
+          <svg class="method-icon"><use href="#i-target"/></svg>
+          <p class="funnel-stage">03 &middot; Purchase</p>
+          <h4>Direct conversion</h4>
+          <p>No more education: named product SKUs, each with its own direct purchase link, ready for a decided buyer.</p>
+          <div class="tag-row"><span class="tag" style="border-color:var(--line-light); color:var(--navy-ink);">Buy here</span></div>
+        </div>
+      </div>
+
+      <p class="case-tag" style="margin-top:36px;">Content Library &middot; Application Brochures</p>
+      <h3 class="case-title">Application brochure format</h3>
+      <p class="gallery-note">Infineon publishes brochures like this openly, and they are one of the asset types inside the 355-document governance programme in Case Four. The skill on show here is not graphic design. Infineon&rsquo;s brand system is fixed. It is the balance behind it: technical content accurate enough for an engineer, writing clear enough for a buyer skimming in thirty seconds, every claim checked against brand guidelines, and the stakeholder work of collecting the right content and data from product teams before a single page gets built.</p>
+    </div>
+
+    <div class="brochure-section">
+      <div class="brochure-row">
+        <div class="brochure-card" onclick="openLightbox('assets/brochure-cover.jpg','Public &amp; Ungated &middot; infineon.com','Innovative Semiconductor Solutions','Cover of Infineon&rsquo;s own published application brochure, publicly downloadable, shown here as a representative sample of the format and brand system this work operates inside.')">
+          <img src="assets/brochure-cover.jpg" alt="Infineon application brochure cover: Innovative Semiconductor Solutions" loading="lazy" />
+        </div>
+        <div class="brochure-card" onclick="openLightbox('assets/brochure-spread.jpg','Public &amp; Ungated &middot; infineon.com','Automotive Section Spread','Interior spread from the same public brochure, showing the editorial layout and brand system the 355-document governance programme works within.')">
+          <img src="assets/brochure-spread.jpg" alt="Infineon application brochure interior spread: Automotive section" loading="lazy" />
+        </div>
+      </div>
+      <p class="brochure-caption">Public, ungated PDF, published by Infineon, shown as a sample of the format. <a href="https://www.infineon.com/applications" target="_blank" rel="noopener">View the original on infineon.com &rarr;</a></p>
+    </div>
+
+    <div class="venture" data-reveal>
+      <a class="browser-glimpse" href="https://about-watt.framer.website" target="_blank" rel="noopener">
+        <div class="browser-chrome">
+          <span class="browser-dot"></span><span class="browser-dot"></span><span class="browser-dot"></span>
+          <span class="browser-url">about-watt.framer.website</span>
+        </div>
+        <img src="assets/aboutwatt-hero.jpg" alt="About-Watt homepage glimpse: second-life EV battery home storage system installed on a house" loading="lazy" />
+      </a>
+      <div class="venture-text">
+        <p class="case-tag">Also Building &middot; EIT Urban Mobility Fellowship</p>
+        <h4>About-Watt: second-life EV battery home storage</h4>
+        <p>A founder-built GTM landing page offering certified second-life EV batteries as home energy storage, with live pricing, a feature comparison and an EV battery buy-back flow.</p>
+        <div style="margin-top:14px;"><a class="btn btn-outline-dark" href="https://about-watt.framer.website" target="_blank" rel="noopener">View the site &rarr;</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= COMPETENCIES ================= -->
+<section id="competencies" class="slide bg-dark">
+  <div class="container slide-inner">
+    <p class="eyebrow accent">Competencies</p>
+    <h2 class="section-title" style="color:var(--white)">Three mandates, owned at the same time.</h2>
+
+    <div class="pillar-grid" data-reveal>
+      <div class="pillar">
+        <div class="pillar-num">01</div>
+        <h3>Marketing Operations &amp; Campaigns</h3>
+        <p>Full awareness-to-purchase journeys for automotive B2B campaigns, planned, built and reported end to end.</p>
+        <div class="tag-row"><span class="tag">Oracle Eloqua</span><span class="tag">Lead scoring</span><span class="tag">Webinar programmes</span><span class="tag">SEA &amp; LinkedIn creative</span></div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">02</div>
+        <h3>AI Workflow Automation</h3>
+        <p>Design, build and roll out the automation that removes manual steps, evaluated on defined criteria, not vendor claims.</p>
+        <div class="tag-row"><span class="tag">n8n</span><span class="tag">Multi-agent GenAI</span><span class="tag">Jasper.ai / ChatGPT</span><span class="tag">Jira triage logic</span></div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">03</div>
+        <h3>Content Governance &amp; Enablement</h3>
+        <p>Turn an undefined operational mess into documented, measured, repeatable process that outlives the person who built it.</p>
+        <div class="tag-row"><span class="tag">Content audits</span><span class="tag">Agency scope mgmt</span><span class="tag">SOPs</span><span class="tag">Confluence libraries</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TOOLS ================= -->
+<section id="tools" class="slide bg-light">
+  <div class="container slide-inner">
+    <p class="eyebrow accent">Tools</p>
+    <h2 class="section-title">What I actually work with.</h2>
+
+    <div class="bucket-grid" data-reveal>
+      <div class="bucket">
+        <div class="bucket-title">Automation &amp; AI</div>
+        <div class="bucket-tools">
+          <div class="tool-chip"><svg class="tool-icon"><use href="#i-flow"/></svg>n8n</div>
+          <div class="tool-chip"><svg class="tool-icon"><use href="#i-flow"/></svg>Make</div>
+          <div class="tool-chip"><svg class="tool-icon"><use href="#i-flow"/></svg>Zapier</div>
+          <div class="tool-chip"><svg class="tool-icon"><use href="#i-spark"/></svg>Multi-agent GenAI workflows</div>
+          <div class="tool-chip"><svg class="tool-icon"><use href="#i-spark"/></svg>Jasper.ai</div>
+          <div class="tool-chip"><svg class="tool-icon"><use href="#i-spark"/></svg>ChatGPT &amp; Microsoft Copilot</div>
+        </div>
+      </div>
+      <div class="bucket">
+        <div class="bucket-title">Marketing Automation</div>
+        <div class="bucket-tools">
+          <div class="tool-chip"><svg class="tool-icon"><use href="#i-mail"/></svg>Oracle Eloqua</div>
+          <div class="tool-chip"><svg class="tool-icon"><use href="#i-target"/></svg>Lead scoring models</div>
+          <div class="tool-chip"><svg class="tool-icon"><use href="#i-route"/></svg>Nurture journeys</div>
+          <div class="tool-chip"><svg class="tool-icon"><use href="#i-crosshair"/></svg>Audience targeting</div>
+          <div class="tool-chip"><svg class="tool-icon"><use href="#i-shield"/></svg>Consent compliance</div>
+          <div class="tool-chip"><svg class="tool-icon"><use href="#i-globe"/></svg>SmartLing</div>
+        </div>
+      </div>
+      <div class="bucket">
+        <div class="bucket-title">Content, SEO &amp; Web</div>
+        <div class="bucket-tools">
+          <div class="tool-chip"><svg class="tool-icon"><use href="#i-layers"/></svg>AEM / DAM &amp; PIM</div>
+          <div class="tool-chip"><svg class="tool-icon"><use href="#i-gear"/></svg>Windchill</div>
+          <div class="tool-chip"><svg class="tool-icon"><use href="#i-search"/></svg>Screaming Frog &amp; Search Console</div>
+          <div class="tool-chip"><svg class="tool-icon"><use href="#i-link"/></svg>Ahrefs</div>
+          <div class="tool-chip"><svg class="tool-icon"><use href="#i-bar"/></svg>Google Analytics</div>
+        </div>
+      </div>
+      <div class="bucket">
+        <div class="bucket-title">Analytics &amp; Delivery</div>
+        <div class="bucket-tools">
+          <div class="tool-chip"><svg class="tool-icon"><use href="#i-bar"/></svg>Power BI &amp; Looker Studio</div>
+          <div class="tool-chip"><svg class="tool-icon"><use href="#i-ticket"/></svg>Jira</div>
+          <div class="tool-chip"><svg class="tool-icon"><use href="#i-doc"/></svg>Confluence</div>
+          <div class="tool-chip"><svg class="tool-icon"><use href="#i-kanban"/></svg>Trello</div>
+          <div class="tool-chip"><svg class="tool-icon"><use href="#i-grid"/></svg>Excel</div>
+          <div class="tool-chip"><svg class="tool-icon"><use href="#i-cycle"/></svg>Agile delivery</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cert-strip" data-reveal>
+      <span class="cert-pill">AWS Certified Cloud Practitioner</span>
+      <span class="cert-pill">LLM and Prompt Engineering</span>
+      <span class="cert-pill">Applied AI: Building Claude Code Skills</span>
+      <span class="cert-pill">Build AI Agents and Automate Workflows with n8n</span>
+    </div>
+  </div>
+</section>
+
+<div id="lightbox" onclick="closeLightbox()">
+  <button id="lightbox-close" onclick="closeLightbox(event)" aria-label="Close image">&times;</button>
+  <div id="lightbox-panel" onclick="event.stopPropagation()">
+    <img id="lightbox-img" src="" alt="" />
+    <div id="lightbox-caption"></div>
+  </div>
+</div>
+
+<!-- ================= TESTIMONIALS ================= -->
+<section id="testimonials" class="slide bg-light">
+  <div class="container slide-inner">
+    <p class="eyebrow accent">Testimonials</p>
+    <h2 class="section-title">What colleagues and supervisors say.</h2>
+    <p class="lede" style="margin-top:10px;">From reference letters written at the close of each role.</p>
+
+    <div class="carousel-wrap" data-reveal>
+      <button class="carousel-btn prev" onclick="scrollCarousel('testi-track',-1)" aria-label="Previous">&larr;</button>
+      <button class="carousel-btn next" onclick="scrollCarousel('testi-track',1)" aria-label="Next">&rarr;</button>
+      <div class="carousel" id="testi-track">
+      <div class="testi-card">
+        <span class="testi-quote-mark">&ldquo;</span>
+        <p class="testi-text">Ms. Singh possesses very good knowledge and a very good intellectual grasp, and could quickly and confidently solve problems as they arose. She displayed commitment and a high degree of personal initiative, achieving very good results even under high pressure, and stood out for making responsible, consistently apt judgments while keeping a clear overview at all times. Her personal conduct was exemplary.</p>
+        <div class="testi-person">
+          <img class="testi-photo" src="assets/uli-schneider.jpg" alt="Dr. Uli Schneider" />
+          <div>
+            <div class="testi-name">Dr. Uli Schneider</div>
+            <div class="testi-role">VP Digital Customer Engagement, Infineon Technologies AG</div>
+            <div class="testi-location">Munich, Germany</div>
+          </div>
+          <a class="testi-linkedin" href="https://www.linkedin.com/in/dr-uli-schneider-a29ba659/" target="_blank" rel="noopener" aria-label="Dr. Uli Schneider on LinkedIn" onclick="event.stopPropagation()"><svg><use href="#i-linkedin"/></svg></a>
+        </div>
+      </div>
+
+      <div class="testi-card">
+        <span class="testi-quote-mark">&ldquo;</span>
+        <p class="testi-text">What distinguishes Ms. Singh is her exceptional capacity to manage competing demands at the highest level. For a year and a half she worked as a working student at Infineon Technologies while maintaining outstanding academic performance, treating her professional and academic pursuits not as separate but as mutually reinforcing. A level of maturity and strategic thinking rare among students at this stage.</p>
+        <div class="testi-person">
+          <img class="testi-photo" src="assets/dana-schultchen.jpg" alt="Dr. Dana Schultchen" />
+          <div>
+            <div class="testi-name">Dr. Dana Schultchen</div>
+            <div class="testi-role">Program Lead, Masters Entrepreneurship &amp; Digital Transformation, Hochschule M&uuml;nchen</div>
+            <div class="testi-location">Munich, Germany</div>
+          </div>
+          <a class="testi-linkedin" href="https://www.linkedin.com/in/dr-dana-schultchen-9106a81a3/" target="_blank" rel="noopener" aria-label="Dr. Dana Schultchen on LinkedIn" onclick="event.stopPropagation()"><svg><use href="#i-linkedin"/></svg></a>
+        </div>
+      </div>
+
+      <div class="testi-card">
+        <span class="testi-quote-mark">&ldquo;</span>
+        <p class="testi-text">Ms. Singh has exceedingly wide knowledge. She is in a position to aptly grasp even difficult situations straight away and to quickly find the right solutions. She always displays high commitment and a high degree of personal initiative, and always meets deadlines despite heavy stress. Special mention must be made of her good analytical skills. She works conscientiously and reliably at all times.</p>
+        <div class="testi-person">
+          <img class="testi-photo" src="assets/jurgen-hoika.jpg" alt="J&uuml;rgen Hoika" />
+          <div>
+            <div class="testi-name">J&uuml;rgen Hoika</div>
+            <div class="testi-role">Senior Vice President Marketing, Infineon Technologies AG</div>
+            <div class="testi-location">Munich, Germany</div>
+          </div>
+          <a class="testi-linkedin" href="https://www.linkedin.com/in/juergenhoika/" target="_blank" rel="noopener" aria-label="J&uuml;rgen Hoika on LinkedIn" onclick="event.stopPropagation()"><svg><use href="#i-linkedin"/></svg></a>
+        </div>
+      </div>
+
+      <div class="testi-card">
+        <span class="testi-quote-mark">&ldquo;</span>
+        <p class="testi-text">Ms. Singh is a rare combination of technical competence, entrepreneurial creativity, and intercultural leadership. She operates at the intersection of engineering, business, and sustainability, demonstrating the ability to bridge disciplines and translate ideas into tangible, impactful solutions. Her reliability and ability to perform under pressure make her an asset to any international, innovation-oriented environment.</p>
+        <div class="testi-person">
+          <img class="testi-photo" src="assets/bettina-maisch.jpg" alt="Prof. Dr. Bettina Maisch" />
+          <div>
+            <div class="testi-name">Prof. Dr. Bettina Maisch</div>
+            <div class="testi-role">Strascheg Center for Entrepreneurship (SCE), HM Munich</div>
+            <div class="testi-location">Munich, Germany</div>
+          </div>
+          <a class="testi-linkedin" href="https://www.linkedin.com/in/bettinamaisch/" target="_blank" rel="noopener" aria-label="Prof. Dr. Bettina Maisch on LinkedIn" onclick="event.stopPropagation()"><svg><use href="#i-linkedin"/></svg></a>
+        </div>
+      </div>
+
+      <div class="testi-card">
+        <span class="testi-quote-mark">&ldquo;</span>
+        <p class="testi-text">Megha was part of the Wipro consulting team supporting our technology programmes at Charles Schwab Corporation. She consistently delivered high-stakes, time-sensitive projects within the agreed timeframe, with full accountability for the result, and adapted quickly to new tools and changing requirements as each project demanded. She is a valuable asset to any organisation and team she joins.</p>
+        <div class="testi-person">
+          <img class="testi-photo" src="assets/madhava-palnati.jpg" alt="Madhava Palnati" />
+          <div>
+            <div class="testi-name">Madhava Palnati</div>
+            <div class="testi-role">Senior Database Administrator, Charles Schwab Corporation</div>
+            <div class="testi-location">Austin, Texas, United States</div>
+          </div>
+          <a class="testi-linkedin" href="https://www.linkedin.com/in/madhavapalnati/" target="_blank" rel="noopener" aria-label="Madhava Palnati on LinkedIn" onclick="event.stopPropagation()"><svg><use href="#i-linkedin"/></svg></a>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section id="contact" class="slide bg-dark">
+  <div class="container slide-inner">
+    <div class="contact-grid">
+      <div>
+        <p class="eyebrow accent">Get In Touch</p>
+        <h2 class="section-title" style="color:var(--white)">Munich, Germany. Available immediately.</h2>
+        <p class="lede muted" style="margin-top:16px;">Six years of proof that the person who automates a workflow can also run the campaign it serves. That pairing is rare, and it is what I bring to the table. Master&rsquo;s completed May 2026, Infineon engagement completed September 2026, authorised to work in Germany with no sponsorship needed.</p>
+      </div>
+      <div class="contact-list">
+        <a href="mailto:megha.singh5554@gmail.com"><span class="k">Email</span><span class="v">megha.singh5554@gmail.com</span></a>
+        <a href="tel:+491746360503"><span class="k">Phone</span><span class="v">+49 174 6360503</span></a>
+        <a href="https://www.linkedin.com/in/meghasingh5554" target="_blank" rel="noopener"><span class="k">LinkedIn</span><span class="v">linkedin.com/in/meghasingh5554</span></a>
+      </div>
+    </div>
+    <div style="text-align:center; margin-top:48px;">
+      <a class="btn btn-solid" href="mailto:megha.singh5554@gmail.com?subject=Let%27s%20talk" style="white-space:nowrap;">Give me a small cubicle and a login. You will not regret the hire.</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container foot-row">
+    <p>&copy; 2026 Megha Singh. Built by hand, then automated.</p>
+    <p>Munich, Germany</p>
+  </div>
+</footer>
+
+<script>
+  var menuBtn = document.getElementById('menu-btn');
+  var mobileMenu = document.getElementById('mobile-menu');
+  menuBtn.addEventListener('click', function(){
+    var open = mobileMenu.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  mobileMenu.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', function(){ mobileMenu.classList.remove('open'); }); });
+
+  var trace = document.getElementById('trace');
+  function updateTrace(){
+    var h = document.documentElement;
+    trace.style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + '%';
+  }
+  document.addEventListener('scroll', updateTrace, {passive:true});
+  updateTrace();
+
+  var navLinks = document.querySelectorAll('nav.links a');
+  var dotLinks = document.querySelectorAll('#dotnav a');
+  var slideSections = document.querySelectorAll('section.slide[id]');
+  function updateActiveNav(){
+    var pos = window.scrollY + window.innerHeight * 0.4;
+    var current = slideSections[0] ? slideSections[0].id : null;
+    slideSections.forEach(function(s){ if(s.offsetTop <= pos) current = s.id; });
+    navLinks.forEach(function(a){ a.classList.toggle('active', a.getAttribute('href') === '#' + current); });
+    dotLinks.forEach(function(a){ a.classList.toggle('active', a.getAttribute('data-target') === current); });
+  }
+  document.addEventListener('scroll', updateActiveNav, {passive:true});
+  updateActiveNav();
+
+  // keyboard: jump a full slide at a time
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var slideArr = Array.prototype.slice.call(slideSections);
+  document.addEventListener('keydown', function(e){
+    if(e.key !== 'ArrowDown' && e.key !== 'ArrowUp' && e.key !== 'PageDown' && e.key !== 'PageUp') return;
+    var pos = window.scrollY + 2;
+    var idx = 0;
+    slideArr.forEach(function(s,i){ if(s.offsetTop <= pos) idx = i; });
+    var dir = (e.key === 'ArrowDown' || e.key === 'PageDown') ? 1 : -1;
+    var target = slideArr[idx + dir];
+    if(target){ e.preventDefault(); target.scrollIntoView({behavior: reduceMotion ? 'auto' : 'smooth'}); }
+  });
+
+  var revealEls = document.querySelectorAll('[data-reveal]');
+  if(!reduceMotion && 'IntersectionObserver' in window){
+    revealEls.forEach(function(el){
+      el.classList.add('pre');
+      var settled = false;
+      function settle(){ if(!settled){ settled = true; el.classList.add('in'); el.classList.remove('pre'); } }
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){ if(entry.isIntersecting){ settle(); io.unobserve(entry.target); } });
+      }, {threshold:0.1, rootMargin:'0px 0px -40px 0px'});
+      io.observe(el);
+      setTimeout(settle, 1500);
+    });
+  }
+
+  function animateCount(el){
+    var target = parseFloat(el.getAttribute('data-count'));
+    var prefix = el.getAttribute('data-prefix') || '';
+    var suffix = el.getAttribute('data-suffix') || '';
+    var duration = 1100; var start = null;
+    function step(ts){
+      if(!start) start = ts;
+      var progress = Math.min((ts - start) / duration, 1);
+      var eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = prefix + Math.round(target * eased).toLocaleString('en-US') + suffix;
+      if(progress < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  var counters = document.querySelectorAll('[data-count]');
+  function finalizeCounters(){
+    counters.forEach(function(el){
+      var target = parseFloat(el.getAttribute('data-count'));
+      el.textContent = (el.getAttribute('data-prefix')||'') + target.toLocaleString('en-US') + (el.getAttribute('data-suffix')||'');
+    });
+  }
+  if(reduceMotion || !('IntersectionObserver' in window)){
+    finalizeCounters();
+  } else {
+    var counted = false;
+    var statStrip = document.querySelector('.stat-strip');
+    var cio = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){ if(entry.isIntersecting && !counted){ counted = true; counters.forEach(animateCount); cio.unobserve(entry.target); } });
+    }, {threshold:0.3});
+    if(statStrip) cio.observe(statStrip);
+    setTimeout(function(){ if(!counted){ counted = true; finalizeCounters(); } }, 4000);
+  }
+
+  function openLightbox(src, tag, title, text){
+    var imgEl = document.getElementById('lightbox-img');
+    if(src){ imgEl.src = src; imgEl.style.display = 'block'; }
+    else { imgEl.removeAttribute('src'); imgEl.style.display = 'none'; }
+    var cap = document.getElementById('lightbox-caption');
+    cap.innerHTML = '';
+    if(tag || title || text){
+      var html = '';
+      if(tag) html += '<p class="lb-tag">' + tag + '</p>';
+      if(title) html += '<h4>' + title + '</h4>';
+      if(text) html += '<p>' + text + '</p>';
+      cap.innerHTML = html;
+    }
+    document.getElementById('lightbox').classList.add('open');
+  }
+  function closeLightbox(e){
+    if(e) e.stopPropagation();
+    document.getElementById('lightbox').classList.remove('open');
+    document.getElementById('lightbox-img').src = '';
+  }
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeLightbox(); });
+
+  function scrollCarousel(id, dir){
+    var el = document.getElementById(id);
+    if(!el) return;
+    var amount = Math.min(el.clientWidth * 0.85, 420);
+    el.scrollBy({left: dir * amount, behavior:'smooth'});
+  }
+
+  document.querySelectorAll('.engage-card').forEach(function(card){
+    card.addEventListener('click', function(){
+      var img = card.querySelector('img');
+      var tag = card.querySelector('.engage-tag');
+      var h4 = card.querySelector('h4');
+      var p = card.querySelector('.engage-caption p');
+      openLightbox(img ? img.src : '', tag ? tag.textContent : '', h4 ? h4.innerHTML : '', p ? p.innerHTML : '');
+    });
+  });
+  document.querySelectorAll('.testi-card').forEach(function(card){
+    card.addEventListener('click', function(){
+      var img = card.querySelector('.testi-photo');
+      var name = card.querySelector('.testi-name');
+      var role = card.querySelector('.testi-role');
+      var text = card.querySelector('.testi-text');
+      openLightbox(img ? img.src : '', role ? role.textContent : '', name ? name.innerHTML : '', text ? text.innerHTML : '');
+    });
+  });
+  document.querySelectorAll('.story-card').forEach(function(card){
+    card.addEventListener('click', function(){
+      var tag = card.querySelector('.story-tag');
+      var full = card.getAttribute('data-full');
+      openLightbox('', tag ? tag.textContent : '', '', full || '');
+    });
+  });
+
+  function toggleCase(headEl){
+    var card = headEl.closest('.case');
+    var wasOpen = card.classList.contains('open');
+    document.querySelectorAll('.case.open').forEach(function(c){ c.classList.remove('open'); });
+    if(!wasOpen){ card.classList.add('open'); }
+  }
+</script>
+
+</body>
+</html>
