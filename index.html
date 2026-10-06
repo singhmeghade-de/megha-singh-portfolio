@@ -100,8 +100,8 @@
   @media (max-width:760px){#dotnav{display:none;}}
 
   [data-reveal]{opacity:1; transform:none;}
-  [data-reveal].pre{opacity:0; transform:translateY(14px);}
-  [data-reveal].in{opacity:1; transform:translateY(0); transition:opacity .6s ease, transform .6s ease;}
+  [data-reveal].pre{opacity:0; transform:translateY(52px);}
+  [data-reveal].in{opacity:1; transform:translateY(0); transition:opacity .7s cubic-bezier(.2,.8,.2,1), transform .7s cubic-bezier(.2,.8,.2,1);}
 
   /* ---------- slide sections + angular gradients ---------- */
   section.slide{
@@ -142,20 +142,18 @@
   .btn-outline-dark:hover{border-color:var(--navy);}
 
   /* ---------- hero ---------- */
-  .hero-grid{display:grid; grid-template-columns:1.2fr 0.8fr; gap:54px; align-items:start;}
+  .hero-grid{display:grid; grid-template-columns:1.2fr 0.8fr; gap:54px; align-items:start;
+    animation:heroZoomOut 1.1s cubic-bezier(.2,.8,.2,1) both; transform-origin:center center;}
   .hero-grid > *{min-width:0;}
   @media (max-width:900px){.hero-grid{grid-template-columns:1fr; gap:36px;}}
   .hero-tag{color:var(--amber); margin-bottom:20px; white-space:nowrap; letter-spacing:0.08em; font-size:clamp(0.68rem,1.6vw,0.84rem);}
-  .hero-name{font-size:clamp(3.1rem,7.2vw,6.2rem); font-weight:700; letter-spacing:-0.02em; line-height:0.98;
-    animation:heroRise .9s cubic-bezier(.2,.8,.2,1) both;}
-  .hero-role{font-size:clamp(1.35rem,2.5vw,1.8rem); color:var(--amber); font-weight:600; margin-top:16px;
-    animation:heroRise .9s cubic-bezier(.2,.8,.2,1) .12s both;}
-  .hero-company{font-size:1.12rem; color:rgba(255,255,255,0.72); margin-top:6px;
-    animation:heroRise .9s cubic-bezier(.2,.8,.2,1) .2s both;}
+  .hero-name{font-size:clamp(3.1rem,7.2vw,6.2rem); font-weight:700; letter-spacing:-0.02em; line-height:0.98;}
+  .hero-role{font-size:clamp(1.35rem,2.5vw,1.8rem); color:var(--amber); font-weight:600; margin-top:16px;}
+  .hero-company{font-size:1.12rem; color:rgba(255,255,255,0.72); margin-top:6px;}
   @media (max-width:640px){.hero-company{font-size:0.86rem;}}
   @media (max-width:440px){.hero-company{font-size:0.62rem; letter-spacing:-0.01em;}}
-  @keyframes heroRise{from{opacity:0; transform:translateY(16px);} to{opacity:1; transform:translateY(0);}}
-  @media (prefers-reduced-motion:reduce){.hero-name,.hero-role,.hero-company{animation:none;}}
+  @keyframes heroZoomOut{from{opacity:0; transform:scale(1.22);} to{opacity:1; transform:scale(1);}}
+  @media (prefers-reduced-motion:reduce){.hero-grid{animation:none;}}
   .hero-rule{width:64px; height:2px; background:var(--amber); margin:28px 0;}
   .hero-intro{font-size:1.16rem; line-height:1.75; max-width:54ch; color:rgba(255,255,255,0.92);}
   .hero-cta{display:flex; gap:14px; margin-top:32px; flex-wrap:wrap;}
@@ -667,7 +665,7 @@
       <div class="stat-cell"><div class="stat-num" data-count="18" data-suffix=" mos">0</div><div class="stat-label">Marketing operations &amp; AI automation at Infineon</div></div>
     </div>
 
-    <div id="case-list">
+    <div id="case-list" data-reveal>
       <article class="case">
         <div class="case-head" onclick="toggleCase(this)">
           <div>
@@ -1025,7 +1023,7 @@
 <!-- ================= CONTACT ================= -->
 <section id="contact" class="slide bg-dark">
   <div class="container slide-inner">
-    <div class="contact-grid">
+    <div class="contact-grid" data-reveal>
       <div>
         <p class="eyebrow accent">Get In Touch</p>
         <h2 class="section-title" style="color:var(--white)">Munich, Germany. Available immediately.</h2>
