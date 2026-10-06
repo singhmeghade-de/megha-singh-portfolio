@@ -102,6 +102,10 @@
   [data-reveal]{opacity:1; transform:none;}
   [data-reveal].pre{opacity:0; transform:translateY(52px);}
   [data-reveal].in{opacity:1; transform:translateY(0); transition:opacity .7s cubic-bezier(.2,.8,.2,1), transform .7s cubic-bezier(.2,.8,.2,1);}
+  /* wave: each item in a row rises slightly after the one before it */
+  .pillar-grid [data-reveal]:nth-child(2).in, .stat-strip [data-reveal]:nth-child(2).in, .bucket-grid [data-reveal]:nth-child(2).in{transition-delay:.12s;}
+  .pillar-grid [data-reveal]:nth-child(3).in, .stat-strip [data-reveal]:nth-child(3).in, .bucket-grid [data-reveal]:nth-child(3).in{transition-delay:.24s;}
+  .stat-strip [data-reveal]:nth-child(4).in, .bucket-grid [data-reveal]:nth-child(4).in{transition-delay:.36s;}
 
   /* ---------- slide sections + angular gradients ---------- */
   section.slide{
@@ -658,15 +662,15 @@
     <h2 class="section-title">Five mandates, measured end to end.</h2>
     <p class="lede" style="margin-top:10px;">Each one follows the same discipline: a named tool, a verified figure, and a commercial consequence. Open a case for the full method.</p>
 
-    <div class="stat-strip" data-reveal>
-      <div class="stat-cell"><div class="stat-num" data-count="2389">0</div><div class="stat-label">Jira tickets triaged by a single n8n workflow</div></div>
-      <div class="stat-cell"><div class="stat-num" data-prefix="&euro;" data-count="430" data-suffix="K">0</div><div class="stat-label">Agency spend addressed by an internal GenAI workflow</div></div>
-      <div class="stat-cell"><div class="stat-num" data-count="70" data-suffix="%">0</div><div class="stat-label">Faster content production in the Jasper.ai pilot</div></div>
-      <div class="stat-cell"><div class="stat-num" data-count="18" data-suffix=" mos">0</div><div class="stat-label">Marketing operations &amp; AI automation at Infineon</div></div>
+    <div class="stat-strip">
+      <div class="stat-cell" data-reveal><div class="stat-num" data-count="2389">0</div><div class="stat-label">Jira tickets triaged by a single n8n workflow</div></div>
+      <div class="stat-cell" data-reveal><div class="stat-num" data-prefix="&euro;" data-count="430" data-suffix="K">0</div><div class="stat-label">Agency spend addressed by an internal GenAI workflow</div></div>
+      <div class="stat-cell" data-reveal><div class="stat-num" data-count="70" data-suffix="%">0</div><div class="stat-label">Faster content production in the Jasper.ai pilot</div></div>
+      <div class="stat-cell" data-reveal><div class="stat-num" data-count="18" data-suffix=" mos">0</div><div class="stat-label">Marketing operations &amp; AI automation at Infineon</div></div>
     </div>
 
-    <div id="case-list" data-reveal>
-      <article class="case">
+    <div id="case-list">
+      <article class="case" data-reveal>
         <div class="case-head" onclick="toggleCase(this)">
           <div>
             <p class="case-tag">Case One &middot; AI in Marketing &middot; Infineon Automotive</p>
@@ -687,7 +691,7 @@
         </div></div>
       </article>
 
-      <article class="case">
+      <article class="case" data-reveal>
         <div class="case-head" onclick="toggleCase(this)">
           <div>
             <p class="case-tag">Case Two &middot; AI in Marketing &middot; Infineon Automotive</p>
@@ -708,7 +712,7 @@
         </div></div>
       </article>
 
-      <article class="case">
+      <article class="case" data-reveal>
         <div class="case-head" onclick="toggleCase(this)">
           <div>
             <p class="case-tag">Case Three &middot; AI Automation &middot; Infineon Automotive</p>
@@ -729,7 +733,7 @@
         </div></div>
       </article>
 
-      <article class="case">
+      <article class="case" data-reveal>
         <div class="case-head" onclick="toggleCase(this)">
           <div>
             <p class="case-tag">Case Four &middot; Content Strategy &middot; Infineon Automotive</p>
@@ -750,7 +754,7 @@
         </div></div>
       </article>
 
-      <article class="case">
+      <article class="case" data-reveal>
         <div class="case-head" onclick="toggleCase(this)">
           <div>
             <p class="case-tag">Case Five &middot; Go-To-Market &middot; Hello Sales Corporation</p>
@@ -843,20 +847,20 @@
     <p class="eyebrow accent">Competencies</p>
     <h2 class="section-title" style="color:var(--white)">Three mandates, owned at the same time.</h2>
 
-    <div class="pillar-grid" data-reveal>
-      <div class="pillar">
+    <div class="pillar-grid">
+      <div class="pillar" data-reveal>
         <div class="pillar-num">01</div>
         <h3>Marketing Operations &amp; Campaigns</h3>
         <p>Full awareness-to-purchase journeys for automotive B2B campaigns, planned, built and reported end to end.</p>
         <div class="tag-row"><span class="tag">Oracle Eloqua</span><span class="tag">Lead scoring</span><span class="tag">Webinar programmes</span><span class="tag">SEA &amp; LinkedIn creative</span></div>
       </div>
-      <div class="pillar">
+      <div class="pillar" data-reveal>
         <div class="pillar-num">02</div>
         <h3>AI Workflow Automation</h3>
         <p>Design, build and roll out the automation that removes manual steps, evaluated on defined criteria, not vendor claims.</p>
         <div class="tag-row"><span class="tag">n8n</span><span class="tag">Multi-agent GenAI</span><span class="tag">Jasper.ai / ChatGPT</span><span class="tag">Jira triage logic</span></div>
       </div>
-      <div class="pillar">
+      <div class="pillar" data-reveal>
         <div class="pillar-num">03</div>
         <h3>Content Governance &amp; Enablement</h3>
         <p>Turn an undefined operational mess into documented, measured, repeatable process that outlives the person who built it.</p>
@@ -872,8 +876,8 @@
     <p class="eyebrow accent">Tools</p>
     <h2 class="section-title">What I actually work with.</h2>
 
-    <div class="bucket-grid" data-reveal>
-      <div class="bucket">
+    <div class="bucket-grid">
+      <div class="bucket" data-reveal>
         <div class="bucket-title">Automation &amp; AI</div>
         <div class="bucket-tools">
           <div class="tool-chip"><svg class="tool-icon"><use href="#i-flow"/></svg>n8n</div>
@@ -884,7 +888,7 @@
           <div class="tool-chip"><svg class="tool-icon"><use href="#i-spark"/></svg>ChatGPT &amp; Microsoft Copilot</div>
         </div>
       </div>
-      <div class="bucket">
+      <div class="bucket" data-reveal>
         <div class="bucket-title">Marketing Automation</div>
         <div class="bucket-tools">
           <div class="tool-chip"><svg class="tool-icon"><use href="#i-mail"/></svg>Oracle Eloqua</div>
@@ -895,7 +899,7 @@
           <div class="tool-chip"><svg class="tool-icon"><use href="#i-globe"/></svg>SmartLing</div>
         </div>
       </div>
-      <div class="bucket">
+      <div class="bucket" data-reveal>
         <div class="bucket-title">Content, SEO &amp; Web</div>
         <div class="bucket-tools">
           <div class="tool-chip"><svg class="tool-icon"><use href="#i-layers"/></svg>AEM / DAM &amp; PIM</div>
@@ -905,7 +909,7 @@
           <div class="tool-chip"><svg class="tool-icon"><use href="#i-bar"/></svg>Google Analytics</div>
         </div>
       </div>
-      <div class="bucket">
+      <div class="bucket" data-reveal>
         <div class="bucket-title">Analytics &amp; Delivery</div>
         <div class="bucket-tools">
           <div class="tool-chip"><svg class="tool-icon"><use href="#i-bar"/></svg>Power BI &amp; Looker Studio</div>
@@ -1095,13 +1099,12 @@
   if(!reduceMotion && 'IntersectionObserver' in window){
     revealEls.forEach(function(el){
       el.classList.add('pre');
-      var settled = false;
-      function settle(){ if(!settled){ settled = true; el.classList.add('in'); el.classList.remove('pre'); } }
       var io = new IntersectionObserver(function(entries){
-        entries.forEach(function(entry){ if(entry.isIntersecting){ settle(); io.unobserve(entry.target); } });
-      }, {threshold:0.1, rootMargin:'0px 0px -40px 0px'});
+        entries.forEach(function(entry){
+          if(entry.isIntersecting){ el.classList.add('in'); el.classList.remove('pre'); io.unobserve(entry.target); }
+        });
+      }, {threshold:0.15, rootMargin:'0px 0px -80px 0px'});
       io.observe(el);
-      setTimeout(settle, 1500);
     });
   }
 
@@ -1166,6 +1169,23 @@
     var amount = Math.min(el.clientWidth * 0.85, 420);
     el.scrollBy({left: dir * amount, behavior:'smooth'});
   }
+
+  function setupAutoCarousel(id, intervalMs){
+    var el = document.getElementById(id);
+    if(!el || reduceMotion) return;
+    var paused = false;
+    setInterval(function(){
+      if(paused) return;
+      var amount = Math.min(el.clientWidth * 0.85, 420);
+      var atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 4;
+      el.scrollTo({left: atEnd ? 0 : el.scrollLeft + amount, behavior:'smooth'});
+    }, intervalMs);
+    ['mouseenter','touchstart','focusin'].forEach(function(evt){ el.addEventListener(evt, function(){ paused = true; }, {passive:true}); });
+    ['mouseleave','touchend','focusout'].forEach(function(evt){ el.addEventListener(evt, function(){ paused = false; }, {passive:true}); });
+  }
+  setupAutoCarousel('story-track', 4200);
+  setupAutoCarousel('engage-track', 4800);
+  setupAutoCarousel('testi-track', 5400);
 
   document.querySelectorAll('.engage-card').forEach(function(card){
     card.addEventListener('click', function(){
