@@ -224,6 +224,7 @@
   /* ---------- shared carousel ---------- */
   .carousel-wrap{position:relative; margin-top:40px; min-width:0;}
   .carousel{display:flex; gap:18px; overflow-x:auto; scroll-snap-type:x mandatory; scroll-padding-left:4px; padding:2px 2px 14px; -webkit-overflow-scrolling:touch; scrollbar-width:thin;}
+  #engage-track{padding-top:100px; padding-bottom:100px; align-items:center;}
   .carousel-btn{position:absolute; top:50%; transform:translateY(-50%); width:42px; height:42px; border-radius:50%; border:1px solid var(--line-light); background:var(--white); color:var(--navy); display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:1.1rem; z-index:5; box-shadow:0 10px 24px -12px rgba(20,33,61,0.4); transition:background .15s;}
   .carousel-btn:hover{background:var(--amber);}
   .carousel-btn.prev{left:-14px;}
@@ -233,14 +234,19 @@
   @media (max-width:640px){.carousel-btn{display:none;}}
 
   /* ---------- engagements ---------- */
-  .engage-card{position:relative; border-radius:10px; overflow:hidden; flex:0 0 300px; height:380px; scroll-snap-align:start; cursor:zoom-in;}
-  .engage-card img{width:100%; height:100%; object-fit:cover; display:block; transition:transform .5s ease;}
-  .engage-card:hover img{transform:scale(1.045);}
-  .engage-scrim{position:absolute; inset:0; background:linear-gradient(to top, rgba(10,21,38,0.88) 0%, rgba(10,21,38,0.25) 45%, rgba(10,21,38,0) 70%); pointer-events:none;}
+  .engage-card{position:relative; border-radius:10px; overflow:hidden; flex:0 0 300px; height:380px; scroll-snap-align:start; display:flex; flex-direction:column; transform-origin:center center; transition:transform .4s cubic-bezier(.2,.8,.2,1), box-shadow .4s ease; will-change:transform;}
+  .engage-card img{width:100%; height:100%; object-fit:cover; display:block; transition:height .35s ease;}
+  .engage-scrim{position:absolute; inset:0; background:linear-gradient(to top, rgba(10,21,38,0.88) 0%, rgba(10,21,38,0.25) 45%, rgba(10,21,38,0) 70%); pointer-events:none; transition:opacity .25s ease;}
   .engage-caption{position:absolute; left:0; right:0; bottom:0; padding:20px; color:var(--white);}
   .engage-tag{font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--amber); font-weight:700;}
   .engage-caption h4{font-size:1.05rem; font-weight:600; margin-top:5px; color:var(--white);}
   .engage-caption p{font-size:0.8rem; color:rgba(255,255,255,0.82); margin-top:5px; line-height:1.5; max-width:46ch;}
+  .engage-card:hover{transform:scale(1.5); z-index:30; box-shadow:0 30px 70px -20px rgba(0,0,0,0.7);}
+  .engage-card:hover img{height:56%;}
+  .engage-card:hover .engage-scrim{opacity:0;}
+  .engage-card:hover .engage-caption{position:static; flex:1; background:var(--navy-deep); display:flex; flex-direction:column; justify-content:center; padding:16px 18px;}
+  .engage-card:hover .engage-caption p{max-width:none;}
+  @media (hover:none){.engage-card:hover{transform:none; box-shadow:none;} .engage-card:hover img{height:100%;} .engage-card:hover .engage-scrim{opacity:1;} .engage-card:hover .engage-caption{position:absolute; background:none; display:block; padding:20px;}}
 
   /* ---------- pillars ---------- */
   .pillar-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line-dark); border:1px solid var(--line-dark); margin-top:40px;}
@@ -1187,15 +1193,6 @@
   setupAutoCarousel('engage-track', 4800);
   setupAutoCarousel('testi-track', 5400);
 
-  document.querySelectorAll('.engage-card').forEach(function(card){
-    card.addEventListener('click', function(){
-      var img = card.querySelector('img');
-      var tag = card.querySelector('.engage-tag');
-      var h4 = card.querySelector('h4');
-      var p = card.querySelector('.engage-caption p');
-      openLightbox(img ? img.src : '', tag ? tag.textContent : '', h4 ? h4.innerHTML : '', p ? p.innerHTML : '');
-    });
-  });
   document.querySelectorAll('.testi-card').forEach(function(card){
     card.addEventListener('click', function(){
       var img = card.querySelector('.testi-photo');
