@@ -59,7 +59,7 @@
   .container{max-width:1180px;margin:0 auto;padding-left:32px;padding-right:32px;width:100%;}
   @media (max-width:640px){.container{padding-left:22px;padding-right:22px;}}
 
-  .eyebrow{font-size:0.84rem; letter-spacing:0.2em; text-transform:uppercase; font-weight:600;}
+  .eyebrow{font-size:1.68rem; letter-spacing:0.14em; text-transform:uppercase; font-weight:600;}
   .tool-icon{width:20px;height:20px;flex-shrink:0;}
 
   /* ---------- progress trace ---------- */
@@ -242,9 +242,9 @@
   .engage-caption h4{font-size:1.05rem; font-weight:600; margin-top:5px; color:var(--white);}
   .engage-caption p{font-size:0.8rem; color:rgba(255,255,255,0.82); margin-top:5px; line-height:1.5; max-width:46ch;}
   .engage-card:hover{transform:scale(1.5); z-index:30; box-shadow:0 30px 70px -20px rgba(0,0,0,0.7);}
-  .engage-card:hover img{height:56%;}
+  .engage-card:hover img{flex:0 0 40%; min-height:0; height:auto;}
   .engage-card:hover .engage-scrim{opacity:0;}
-  .engage-card:hover .engage-caption{position:static; flex:1; background:var(--navy-deep); display:flex; flex-direction:column; justify-content:center; padding:16px 18px;}
+  .engage-card:hover .engage-caption{position:static; flex:1; min-height:0; background:var(--navy-deep); display:flex; flex-direction:column; justify-content:flex-start; padding:14px 18px; overflow-y:auto;}
   .engage-card:hover .engage-caption p{max-width:none;}
   @media (hover:none){.engage-card:hover{transform:none; box-shadow:none;} .engage-card:hover img{height:100%;} .engage-card:hover .engage-scrim{opacity:1;} .engage-card:hover .engage-caption{position:absolute; background:none; display:block; padding:20px;}}
 
@@ -279,8 +279,8 @@
   .case{border:1px solid var(--line-light); border-radius:6px; background:rgba(255,255,255,0.86); margin-top:16px; overflow:hidden;}
   .case-head{padding:22px 26px; display:grid; grid-template-columns:1fr auto; gap:18px; align-items:start; cursor:pointer;}
   @media (max-width:640px){.case-head{padding:18px 18px;}}
-  .case-tag{font-size:0.78rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--amber); font-weight:700;}
-  .case-title{font-size:1.2rem; font-weight:600; margin-top:7px;}
+  .case-tag{font-size:1.56rem; letter-spacing:0.06em; text-transform:uppercase; color:var(--amber); font-weight:700;}
+  .case-title{font-size:1.9rem; font-weight:600; margin-top:10px;}
   .case-thesis{margin-top:7px; font-size:0.95rem; color:var(--navy-ink); font-style:italic; max-width:58ch;}
   .case-metrics{display:flex; gap:24px; flex-wrap:wrap; margin-top:13px;}
   .case-metric-num{font-weight:700; font-size:1.2rem; color:var(--navy); font-variant-numeric:tabular-nums;}
@@ -297,7 +297,7 @@
 
   .venture{margin-top:22px; border:1px dashed var(--line-light); border-radius:6px; padding:22px 26px; display:flex; justify-content:space-between; align-items:center; gap:24px; flex-wrap:wrap; background:var(--paper);}
   .venture-text{flex:1 1 260px;}
-  .venture h4{font-size:1.02rem; font-weight:600;}
+  .venture h4{font-size:1.4rem; font-weight:600; margin-top:6px;}
   .venture p{font-size:0.87rem; color:var(--navy-ink); margin-top:6px; max-width:52ch;}
   .browser-glimpse{width:300px; max-width:100%; border-radius:8px; overflow:hidden; border:1px solid var(--line-light); background:var(--white); box-shadow:0 16px 32px -18px rgba(20,33,61,0.3); flex-shrink:0;}
   .browser-chrome{display:flex; align-items:center; gap:6px; padding:8px 10px; background:#eceef1; border-bottom:1px solid var(--line-light);}
@@ -307,7 +307,7 @@
 
   /* ---------- methodology diagram (no third-party screenshots/logos) ---------- */
   .gallery-block{margin-top:44px; padding-top:36px; border-top:1px solid var(--line-light);}
-  .gallery-note{font-size:0.88rem; color:var(--navy-ink); font-style:italic; max-width:70ch; margin-top:10px; line-height:1.6;}
+  .gallery-note{font-size:0.88rem; color:var(--navy-ink); font-style:italic; max-width:none; width:100%; margin-top:10px; line-height:1.6;}
   .method-row{display:flex; align-items:stretch; gap:14px; margin-top:28px;}
   @media (max-width:860px){.method-row{flex-direction:column;}}
   .method-card{flex:1; border:1px solid var(--line-light); border-radius:8px; padding:24px 22px; background:var(--white);}
